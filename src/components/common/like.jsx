@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 export default class Like extends Component {
   get classes() {
@@ -20,4 +21,8 @@ export default class Like extends Component {
       ></i>
     );
   }
+}
+
+Like.propTypes = {
+  onClick: PropTypes.func.isRequired
 }
