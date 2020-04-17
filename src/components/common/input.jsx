@@ -2,19 +2,18 @@ import React, { Component } from 'react';
 
 export default class Input extends Component {
   render() { 
-    const { name, label, value, onChange } = this.props;
+    const { name, label, error, ...rest } = this.props;
 
     return (
       <div className="form-group">
         <label htmlFor={name}>{ label }</label>
         <input
-          className="form-control"
-          id={name}
+          {...rest}
           name={name}
-          type="text"
-          value={value}
-          onChange={onChange}
+          id={name}
+          className="form-control"
         />
+        {error && <div className="alert alert-danger">{error}</div>}
       </div>
     );
   }
