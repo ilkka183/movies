@@ -1,14 +1,14 @@
 const express = require('express');
 const cors = require('cors');
 
-const auth = require('../routes/auth');
-const customers = require('../routes/customers');
-const genres = require('../routes/genres');
-const movies = require('../routes/movies');
-const rentals = require('../routes/rentals');
-const users = require('../routes/users');
+const auth = require('../route/auth');
+const customers = require('../route/customers');
+const genres = require('../route/genres');
+const movies = require('../route/movies');
+const rentals = require('../route/rentals');
+const users = require('../route/users');
 
-const error = require('../middlewares/error');
+const error = require('../middleware/error');
 
 
 module.exports = function (app) {

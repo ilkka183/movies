@@ -1,9 +1,9 @@
 const express = require('express');
 const connection = require('../connection');
-const validateId = require('../middlewares/validateId');
-const asyncMiddleware = require('../middlewares/async');
-const auth = require('../middlewares/auth');
-const admin = require('../middlewares/admin');
+const validateId = require('../middleware/validateId');
+const asyncMiddleware = require('../middleware/async');
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 
 const router = express.Router();
 

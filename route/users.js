@@ -1,7 +1,7 @@
 const express = require('express');
 const connection = require('../connection');
-const asyncMiddleware = require('../middlewares/async');
-const auth = require('../middlewares/auth');
+const asyncMiddleware = require('../middleware/async');
+const auth = require('../middleware/auth');
 const User = require('../classes/user');
 
 const router = express.Router();

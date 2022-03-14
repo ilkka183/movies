@@ -1,4 +1,4 @@
-const auth = require('../../../middlewares/auth');
+const auth = require('../../../middleware/auth');
 const User = require('../../../classes/user');
 
 
