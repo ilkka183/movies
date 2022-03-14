@@ -1,0 +1,16 @@
+@endpoint = http://localhost:5000/api/auth
+POST {{endpoint}}
+content-type: application/json
+
+{
+    "email": "ilkka.salmenius@gmail.com",
+    "password": "huuhaa"
+}
+###
+POST {{endpoint}}
+content-type: application/json
+
+{
+    "email": "jaakko.salmenius@gmail.com",
+    "password": "huuhaa"
+}

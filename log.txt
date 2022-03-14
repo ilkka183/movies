@@ -1,0 +1,40 @@
+Could not get the genres.Could not get the genres.Could not get the genres.Could not get the genres.
+Could not get the genres.
+User.validate is not a function
+User.validate is not a function
+User.validate is not a function
+User.validate is not a function
+User.findByEmail is not a function
+User.findByEmail is not a function
+User.findByEmail is not a function
+User.findByEmail is not a function
+User.findByEmail is not a function
+User.findByEmail is not a function
+User.findByEmail is not a function
+User.findByEmail is not a function
+User.findByEmail is not a function
+user1 is not defined
+user1 is not defined
+user1 is not defined
+ER_BAD_FIELD_ERROR: Unknown column 'undefined' in 'where clause'
+Nan is not defined
+Nan is not defined
+Nan is not defined
+Nan is not defined
+ER_BAD_FIELD_ERROR: Unknown column 'NaN' in 'where clause'
+ER_BAD_FIELD_ERROR: Unknown column 'NaN' in 'where clause'
+ER_BAD_FIELD_ERROR: Unknown column 'NaN' in 'where clause'
+ER_BAD_FIELD_ERROR: Unknown column 'NaN' in 'where clause'
+invalidId is not defined
+invalidId is not defined
+ER_BAD_FIELD_ERROR: Unknown column 'email' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'email' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'email' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'email' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'email' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'email' in 'field list'
+Cannot enqueue Query after fatal error.
+Cannot enqueue Query after fatal error.
+Cannot enqueue Query after fatal error.
+Cannot enqueue Query after fatal error.
+Cannot enqueue Query after fatal error.

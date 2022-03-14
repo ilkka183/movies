@@ -1,0 +1,18 @@
+@endpoint = http://localhost:5000/api/users
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IkphYWtrbyBTYWxtZW5pdXMiLCJlbWFpbCI6ImphYWtrby5zYWxtZW5pdXNAZ21haWwuY29tIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTY0NzE0NjU0OX0.Dlqm_fEm-5G6S5D2AFJJ8hT82_Bnwy5v8YxhJSRhkFE
+GET {{endpoint}}
+###
+GET {{endpoint}}/ilkka
+###
+GET {{endpoint}}/me
+x-auth-token: {{token}}
+###
+POST {{endpoint}}
+content-type: application/json
+
+{
+    "name": "Ulla Salmenius",
+    "email": "ulla.salmenius@gmail.com",
+    "password": "haahuu",
+    "isAdmin": false
+}

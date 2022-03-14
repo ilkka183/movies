@@ -1,0 +1,4 @@
+@endpoint = http://localhost:5000/api/customers
+GET {{endpoint}}
+###
+GET {{endpoint}}/1
