@@ -38,3 +38,11 @@ Cannot enqueue Query after fatal error.
 Cannot enqueue Query after fatal error.
 Cannot enqueue Query after fatal error.
 Cannot enqueue Query after fatal error.
+res.status(...).sendValues is not a function
+res.status(...).sendValues is not a function
+res.status(...).sendValues is not a function
+res.status(...).sendValues is not a function
+res.status(...).sendValues is not a function
+res.status(...).sendValues is not a function
+CSSConditionRule is not defined
+CSSConditionRule is not defined

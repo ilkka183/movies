@@ -1,6 +1,6 @@
 const express = require('express');
 const connection = require('../connection');
-const asyncMiddleware = require('../middleware/async');
+const wrap = require('../middleware/wrap');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 
@@ -17,13 +17,13 @@ function validate(item) {
 }
 
 
-router.get('/', asyncMiddleware(async (req, res) => {
+router.get('/', wrap(async (req, res) => {
   const { results } = await connection.query('SELECT * FROM Movie ORDER BY Id');
   res.send(results);
 }));
 
 
-router.get('/:id', asyncMiddleware(async (req, res) => {
+router.get('/:id', wrap(async (req, res) => {
   const id = parseInt(req.params.id);
 
   const { results } = await connection.query('SELECT * FROM Movie WHERE Id = ' + id);
@@ -35,7 +35,7 @@ router.get('/:id', asyncMiddleware(async (req, res) => {
 }));
 
 
-router.post('/', auth, asyncMiddleware(async (req, res) => {
+router.post('/', auth, wrap(async (req, res) => {
   const error = validate(req.body);
 
   if (error)
@@ -51,7 +51,7 @@ router.post('/', auth, asyncMiddleware(async (req, res) => {
 }));
 
 
-router.put('/:id', auth, asyncMiddleware(async (req, res) => {
+router.put('/:id', auth, wrap(async (req, res) => {
   const id = parseInt(req.params.id);
 
   const error = validate(req.body);
@@ -66,7 +66,7 @@ router.put('/:id', auth, asyncMiddleware(async (req, res) => {
 }));
 
 
-router.delete('/:id', [auth], asyncMiddleware(async (req, res) => {
+router.delete('/:id', [auth], wrap(async (req, res) => {
   const id = parseInt(req.params.id);
 
   const { results } = await connection.query('DELETE FROM Movie WHERE Id = ' + id);

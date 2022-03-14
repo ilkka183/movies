@@ -1,6 +1,6 @@
 const express = require('express');
 const connection = require('../connection');
-const asyncMiddleware = require('../middleware/async');
+const wrap = require('../middleware/wrap');
 const auth = require('../middleware/auth');
 const User = require('../classes/user');
 
@@ -23,12 +23,12 @@ function validate(user) {
 }
 
 
-router.get('/', asyncMiddleware(async (req, res) => {
+router.get('/', wrap(async (req, res) => {
   const { results } = await connection.query('SELECT * FROM User ORDER BY Id');
   res.send(results);
 }));
 
-router.get('/me', auth, asyncMiddleware(async (req, res) => {
+router.get('/me', auth, wrap(async (req, res) => {
   const id = req.user.id;
 
   const { results } = await connection.query('SELECT * FROM User WHERE Id = ' + id);
@@ -40,7 +40,7 @@ router.get('/me', auth, asyncMiddleware(async (req, res) => {
 }));
 
 
-router.post('/', asyncMiddleware(async (req, res) => {
+router.post('/', wrap(async (req, res) => {
   const error = validate(req.body);
 
   if (error)

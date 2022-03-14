@@ -1,5 +1,5 @@
 const express = require('express');
-const asyncMiddleware = require('../middleware/async');
+const wrap = require('../middleware/wrap');
 const User = require('../classes/user');
 
 const router = express.Router();
@@ -16,7 +16,7 @@ function validate(user) {
 }
 
 
-router.post('/', asyncMiddleware(async (req, res) => {
+router.post('/', wrap(async (req, res) => {
   const error = validate(req.body);
 
   if (error)

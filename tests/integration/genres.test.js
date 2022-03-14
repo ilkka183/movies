@@ -2,10 +2,17 @@ const request = require('supertest');
 const db = require('./db');
 const User = require('../../classes/user');
 
-let server;
+let server = null;
 
 
 describe('/api/genres', () => {
+
+  const user = {
+    name: 'John Smith',
+    email: 'john.smith@gmail.com',
+    password: 'dummy',
+    isAdmin: true
+  };
 
   beforeEach(() => {
     server = require('../../index');
@@ -59,13 +66,6 @@ describe('/api/genres', () => {
 
   describe('POST /', () => {
 
-    const user = {
-      name: 'John Smith',
-      email: 'john.smith@gmail.com',
-      password: 'dummy',
-      isAdmin: false
-    };
-
     let token = '';
 
     async function execute(body) {
@@ -111,5 +111,81 @@ describe('/api/genres', () => {
     });
 
   });
+
+
+  describe('PUT /:id', () => {
+
+    let token = '';
+
+    async function execute(id, body) {
+      return await request(server)
+        .put('/api/genres/' + id)
+        .set('x-auth-token', token)
+        .send(body);
+    }
+
+    beforeEach(async () => {
+      const id = await db.insert('User', user);
+
+      token = User.generateToken({ id, ...user });
+    });
+
+    it('should update a genre if valid id is given', async () => {
+      const id = await db.insert('Genre', { Name: 'Genre1' });
+      const genre = { name: 'Genre2' }
+
+      const res = await execute(id, genre);
+
+      expect(res.status).toBe(200);
+    });
+
+    it('should return 400 if invalid id is given', async () => {
+      const id = await db.insert('Genre', { Name: 'Genre1' });
+      const genre = { name: 'Genre2' }
+
+      const res = await execute(999, genre);
+
+      expect(res.status).toBe(404);
+    });
+
+  });
+
+
+  describe('DELETE /:id', () => {
+
+    let token = '';
+
+    async function execute(id) {
+      return await request(server)
+        .delete('/api/genres/' + id)
+        .set('x-auth-token', token);
+    }
+
+    beforeEach(async () => {
+      const id = await db.insert('User', user);
+
+      token = User.generateToken({ id, ...user });
+    });
+
+    it('should delete a genre if valid id is given', async () => {
+      const id = await db.insert('Genre', { Name: 'Genre1' });
+
+      const res = await execute(id);
+
+      expect(res.status).toBe(200);
+    });
+
+    it('should return 400 if invalid id is given', async () => {
+      const id = await db.insert('Genre', { Name: 'Genre1' });
+
+      const res = await execute(1);
+
+      expect(res.status).toBe(404);
+    });
+
+  });
+
+
+
 
 });

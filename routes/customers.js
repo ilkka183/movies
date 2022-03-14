@@ -1,6 +1,6 @@
 const express = require('express');
 const connection = require('../connection');
-const asyncMiddleware = require('../middleware/async');
+const wrap = require('../middleware/wrap');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 
@@ -9,13 +9,13 @@ const router = express.Router();
 const notFound = 'The customer with the given ID was not found.';
 
 
-router.get('/', asyncMiddleware(async (req, res) => {
+router.get('/', wrap(async (req, res) => {
   const { results } = await connection.query('SELECT * FROM Customer ORDER BY Id');
   res.send(results);
 }));
 
 
-router.get('/:id', asyncMiddleware(async (req, res) => {
+router.get('/:id', wrap(async (req, res) => {
   const id = parseInt(req.params.id);
 
   const { results } = await connection.query('SELECT * FROM Customer WHERE Id = ' + id);

@@ -1,7 +1,7 @@
 const express = require('express');
 const connection = require('../connection');
 const validateId = require('../middleware/validateId');
-const asyncMiddleware = require('../middleware/async');
+const wrap = require('../middleware/wrap');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 
@@ -24,14 +24,14 @@ function validate(genre) {
 }
 
 
-router.get('/', asyncMiddleware(async (req, res) => {
+router.get('/', wrap(async (req, res) => {
   const { results } = await connection.query('SELECT * FROM Genre ORDER BY Id');
 
   res.send(results);
 }));
 
 
-router.get('/:id', validateId, asyncMiddleware(async (req, res) => {
+router.get('/:id', validateId, wrap(async (req, res) => {
   const id = parseInt(req.params.id);
 
   const { results } = await connection.query('SELECT * FROM Genre WHERE Id = ' + id);
@@ -43,7 +43,7 @@ router.get('/:id', validateId, asyncMiddleware(async (req, res) => {
 }));
 
 
-router.post('/', auth, asyncMiddleware(async (req, res, next) => {
+router.post('/', auth, wrap(async (req, res, next) => {
   const error = validate(req.body);
 
   if (error)
@@ -59,7 +59,7 @@ router.post('/', auth, asyncMiddleware(async (req, res, next) => {
 }));
 
 
-router.put('/:id', [auth, validateId], asyncMiddleware(async (req, res, next) => {
+router.put('/:id', [auth, validateId], wrap(async (req, res, next) => {
   const id = parseInt(req.params.id);
 
   const error = validate(req.body);
@@ -71,11 +71,14 @@ router.put('/:id', [auth, validateId], asyncMiddleware(async (req, res, next) =>
 
   const { results } = await connection.queryValues('UPDATE Genre SET Name = ? WHERE Id = ?', [body.name, id]);
 
+  if (results.affectedRows === 0)
+    return res.status(404).send(notFound);
+
   res.send(body);
 }));
 
 
-router.delete('/:id', [auth, admin, validateId], asyncMiddleware(async (req, res, next) => {
+router.delete('/:id', [auth, admin, validateId], wrap(async (req, res, next) => {
   const id = parseInt(req.params.id);
 
   const { results } = await connection.query('DELETE FROM Genre WHERE Id = ' + id);
