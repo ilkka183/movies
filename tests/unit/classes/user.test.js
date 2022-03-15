@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../../../classes/user');
+const User = require('../../../models/user');
 
 describe('User.generateToken', () => {
 
@@ -14,7 +14,7 @@ describe('User.generateToken', () => {
       id: 1,
       name: 'John Smith',
       email: 'john.smith@gmail.com',
-      isAdmin: true
+      isAdmin: 1
     };
 
     const token = User.generateToken(user);

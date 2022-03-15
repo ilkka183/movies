@@ -21,76 +21,76 @@ flush privileges;
 
 CREATE TABLE User
 (
-  Id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-  Name VARCHAR(100) NOT NULL UNIQUE,
-  Email VARCHAR(100) NOT NULL UNIQUE,
-  Password VARCHAR(100) NOT NULL,
-  IsAdmin BOOLEAN NOT NULL DEFAULT FALSE,
-  PRIMARY KEY (Id)
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+  name VARCHAR(100) NOT NULL UNIQUE,
+  email VARCHAR(100) NOT NULL UNIQUE,
+  password VARCHAR(100) NOT NULL,
+  isAdmin BOOLEAN NOT NULL DEFAULT FALSE,
+  PRIMARY KEY (id)
 );
 
 
 CREATE TABLE Genre
 (
-  Id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-  Name VARCHAR(100) NOT NULL UNIQUE,
-  PRIMARY KEY (Id)
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+  name VARCHAR(100) NOT NULL UNIQUE,
+  PRIMARY KEY (id)
 );
 
 
 CREATE TABLE Movie
 (
-  Id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-  Title VARCHAR(50) NOT NULL UNIQUE,
-  GenreId BIGINT UNSIGNED  NOT NULL,
-  NumberInStock SMALLINT UNSIGNED NOT NULL,
-  DailyRentalRate FLOAT UNSIGNED NOT NULL,
-  PRIMARY KEY (Id),
-  FOREIGN KEY (GenreId) REFERENCES Genre(Id)
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+  title VARCHAR(50) NOT NULL UNIQUE,
+  genreId BIGINT UNSIGNED  NOT NULL,
+  numberInStock SMALLINT UNSIGNED NOT NULL,
+  dailyRentalRate DECIMAL(6,2) NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (genreId) REFERENCES Genre(id)
 );
 
 
 CREATE TABLE Customer
 (
-  Id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
-  Name VARCHAR(100) NOT NULL UNIQUE,
-  PRIMARY KEY (Id)
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+  name VARCHAR(100) NOT NULL UNIQUE,
+  PRIMARY KEY (id)
 );
 
 
 CREATE TABLE Rental
 (
-  CustomerId BIGINT UNSIGNED  NOT NULL,
-  MovieId BIGINT UNSIGNED  NOT NULL,
-  FOREIGN KEY (CustomerId) REFERENCES Customer(Id),
-  FOREIGN KEY (MovieId) REFERENCES Movie(Id)
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT UNIQUE,
+  customerId BIGINT UNSIGNED NOT NULL,
+  movieId BIGINT UNSIGNED NOT NULL,
+  dateOut DATE,
+  dateReturned DATE,
+  rentalFee DECIMAL(6,2),
+  PRIMARY KEY (id),
+  FOREIGN KEY (customerId) REFERENCES Customer(id),
+  FOREIGN KEY (movieId) REFERENCES Movie(id)
 );
 
 
-INSERT INTO User(Name, Email, Password, IsAdmin) VALUES('Ilkka Salmenius', 'ilkka.salmenius@gmail.com', 'huuhaa', TRUE);
-INSERT INTO User(Name, Email, Password, IsAdmin) VALUES('Jaakko Salmenius', 'jaakko.salmenius@gmail.com', 'huuhaa', FALSE);
-INSERT INTO User(Name, Email, Password, IsAdmin) VALUES('Mikko Salmenius', 'mikko.salmenius@gmail.com', 'huuhaa', FALSE);
+INSERT INTO User(name, email, password, isAdmin) VALUES('Ilkka Salmenius', 'ilkka.salmenius@gmail.com', 'huuhaa', TRUE);
+INSERT INTO User(name, email, password, isAdmin) VALUES('Jaakko Salmenius', 'jaakko.salmenius@gmail.com', 'huuhaa', FALSE);
+INSERT INTO User(name, email, password, isAdmin) VALUES('Mikko Salmenius', 'mikko.salmenius@gmail.com', 'huuhaa', FALSE);
 
-INSERT INTO Genre(Name) VALUES('Action');
-INSERT INTO Genre(Name) VALUES('Comedy');
-INSERT INTO Genre(Name) VALUES('Thriller');
-INSERT INTO Genre(Name) VALUES('Romance');
+INSERT INTO Genre(name) VALUES('Action');
+INSERT INTO Genre(name) VALUES('Comedy');
+INSERT INTO Genre(name) VALUES('Thriller');
+INSERT INTO Genre(name) VALUES('Romance');
 
-INSERT INTO Movie(Title, GenreId, NumberInStock, DailyRentalRate) VALUES('Terminator', 1, 6, 2.5);
-INSERT INTO Movie(Title, GenreId, NumberInStock, DailyRentalRate) VALUES('Die Hard', 1, 5, 2.5);
-INSERT INTO Movie(Title, GenreId, NumberInStock, DailyRentalRate) VALUES('Get Out', 3, 8, 3.5);
-INSERT INTO Movie(Title, GenreId, NumberInStock, DailyRentalRate) VALUES('Trip to Italy', 2, 7, 3.5);
-INSERT INTO Movie(Title, GenreId, NumberInStock, DailyRentalRate) VALUES('Airplane', 2, 7, 3.5);
-INSERT INTO Movie(Title, GenreId, NumberInStock, DailyRentalRate) VALUES('Wedding Crashers', 2, 7, 3.5);
-INSERT INTO Movie(Title, GenreId, NumberInStock, DailyRentalRate) VALUES('Gone Girl', 3, 7, 3.5);
-INSERT INTO Movie(Title, GenreId, NumberInStock, DailyRentalRate) VALUES('The Sixth Sense', 3, 7, 3.5);
-INSERT INTO Movie(Title, GenreId, NumberInStock, DailyRentalRate) VALUES('The Avengers', 2, 7, 3.5);
+INSERT INTO Movie(title, genreId, numberInStock, dailyRentalRate) VALUES('Terminator', 1, 6, 2.5);
+INSERT INTO Movie(title, genreId, numberInStock, dailyRentalRate) VALUES('Die Hard', 1, 5, 2.5);
+INSERT INTO Movie(title, genreId, numberInStock, dailyRentalRate) VALUES('Get Out', 3, 8, 3.5);
+INSERT INTO Movie(title, genreId, numberInStock, dailyRentalRate) VALUES('Trip to Italy', 2, 7, 3.5);
+INSERT INTO Movie(title, genreId, numberInStock, dailyRentalRate) VALUES('Airplane', 2, 7, 3.5);
+INSERT INTO Movie(title, genreId, numberInStock, dailyRentalRate) VALUES('Wedding Crashers', 2, 7, 3.5);
+INSERT INTO Movie(title, genreId, numberInStock, dailyRentalRate) VALUES('Gone Girl', 3, 7, 3.5);
+INSERT INTO Movie(title, genreId, numberInStock, dailyRentalRate) VALUES('The Sixth Sense', 3, 7, 3.5);
+INSERT INTO Movie(title, genreId, numberInStock, dailyRentalRate) VALUES('The Avengers', 2, 7, 3.5);
 
-INSERT INTO Customer(Name) VALUES('Matti Meikäläinen');
-INSERT INTO Customer(Name) VALUES('Maija Meikäläinen');
-INSERT INTO Customer(Name) VALUES('Mika Meikäläinen');
-
-INSERT INTO Rental(CustomerId, MovieId) VALUES(1, 1);
-INSERT INTO Rental(CustomerId, MovieId) VALUES(2, 4);
-INSERT INTO Rental(CustomerId, MovieId) VALUES(3, 6);
-
+INSERT INTO Customer(name) VALUES('Matti Meikäläinen');
+INSERT INTO Customer(name) VALUES('Maija Meikäläinen');
+INSERT INTO Customer(name) VALUES('Mika Meikäläinen');

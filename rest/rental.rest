@@ -1,4 +1,15 @@
 @endpoint = http://localhost:5000/api/rentals
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwibmFtZSI6IkphYWtrbyBTYWxtZW5pdXMiLCJlbWFpbCI6ImphYWtrby5zYWxtZW5pdXNAZ21haWwuY29tIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTY0NzE0NjU0OX0.Dlqm_fEm-5G6S5D2AFJJ8hT82_Bnwy5v8YxhJSRhkFE
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Iklsa2thIFNhbG1lbml1cyIsImVtYWlsIjoiaWxra2Euc2FsbWVuaXVzQGdtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY0NzE0NjQ5MX0.meZoELejk01A7UW4QHAQ67KBoJJcGbrxHl3NoxAYNTk
 GET {{endpoint}}
 ###
 GET {{endpoint}}/1
+###
+POST {{endpoint}}
+x-auth-token: {{token}}
+content-type: application/json
+
+{
+    "customerId": 1,
+    "movieId": 1
+}

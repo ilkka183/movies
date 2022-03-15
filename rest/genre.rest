@@ -21,6 +21,6 @@ content-type: application/json
     "name": "Action"
 }
 ###
-DELETE {{endpoint}}/6
+DELETE {{endpoint}}/5
 x-auth-token: {{adminToken}}
 

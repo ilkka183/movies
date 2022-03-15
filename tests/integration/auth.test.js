@@ -1,6 +1,6 @@
 const request = require('supertest');
 const db = require('./db');
-const User = require('../../classes/user');
+const User = require('../../models/user');
 
 let server;
 
@@ -11,7 +11,7 @@ describe('auth middleware', () => {
     name: 'John Smith',
     email: 'john.smith@gmail.com',
     password: 'dummy',
-    isAdmin: false
+    isAdmin: 0
   };
 
   let token = '';
@@ -26,7 +26,7 @@ describe('auth middleware', () => {
   beforeEach(async () => {
     server = require('../../index');
 
-    const id = await db.insert('User', user);
+    const { id } = await db.insert('User', user);
 
     token = User.generateToken({ id, ...user });
   });

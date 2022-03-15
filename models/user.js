@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const connection = require('../connection');
+const Entity = require('./entity');
 
-class User {
+class User extends Entity {
   static getPrivateKey() {
     return config.get('jwtPrivateKey');
   }
@@ -25,27 +26,15 @@ class User {
     return jwt.verify(token, User.getPrivateKey());
   }
 
-  static async getByEmail(email) {
-    try {
-      const { results } = await connection.query('SELECT * FROM User WHERE Email = "' + email + '"');
+  static async findByEmail(email) {
+    const { results } = await connection.query('SELECT * FROM User WHERE Email = "' + email + '"');
 
-      if (results.length > 0) {
-        const row = results[0];
+    if (results.length > 0) {
+      return results[0];
+
+    }
   
-        return {
-          id: row.Id,
-          name: row.Name,
-          email: row.Email,
-          password: row.Password,
-          isAdmin: row.IsAdmin === 1
-        };
-      }
-    
-      return null;
-    }
-    catch (ex) {
-      return null;
-    }
+    return null;
   }
 }
 

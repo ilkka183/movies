@@ -5,6 +5,8 @@ const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 const Customer = require('../models/customer');
 const Movie = require('../models/movie');
+const Rental = require('../models/rental');
+const { DATETIME } = require('mysql/lib/protocol/constants/types');
 
 const router = express.Router();
 
@@ -20,20 +22,6 @@ function validate(rental) {
 
   return null
 }
-
-
-router.get('/', wrap(async (req, res) => {
-  const { results } = await connection.query('SELECT * FROM Rental');
-  res.send(results);
-}));
-
-
-router.get('/:customerId', wrap(async (req, res) => {
-  const customerId = parseInt(req.params.customerId);
-
-  const { results } = await connection.query('SELECT * FROM Rental WHERE CustomerId = ' + customerId);
-  res.send(results);
-}));
 
 
 router.post('/', auth, wrap(async (req, res, next) => {
@@ -52,15 +40,19 @@ router.post('/', auth, wrap(async (req, res, next) => {
   if (!movie)
     return res.status(400).send('Invalid movie.');
 
-  if (!movie.numberOfStock === 0)
-    return res.status(400).send('Movie not in stock.');
-  
-  const body = { ...req.body };
+  const rental = await Rental.findByCustomerAndMovieId(req.body.customerId, req.body.movieId);
 
-  const { results } = await connection.queryValues('INSERT INTO Rental SET ?', body);
+  if (!rental)
+    return res.status(404).send('No rental found.');
 
-  body.id = results.insertId;
-    
+  if (rental.dateReturned)
+    return res.status(400).send('Rental already processed.');
+
+  await connection.queryValues('UPDATE Rental SET dateReturned = CURDATE(), rentalFee = ? WHERE Id = ?', [10, rental.id]);
+  await connection.queryValues('UPDATE Movie SET numberInStock = numberInStock + 1 WHERE Id = ?', [movie.id]);
+
+  const body = await Rental.findById(rental.id);
+
   res.send(body);
 }));
 

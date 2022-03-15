@@ -1,6 +1,6 @@
 const express = require('express');
 const wrap = require('../middleware/wrap');
-const User = require('../classes/user');
+const User = require('../models/user');
 
 const router = express.Router();
 
@@ -22,7 +22,7 @@ router.post('/', wrap(async (req, res) => {
   if (error)
     return res.status(400).send(error.message);
 
-  const user = await User.getByEmail(req.body.email);
+  const user = await User.findByEmail(req.body.email);
 
   if (!user)
     return res.status(400).send('Invalid email or password.');

@@ -1,8 +1,7 @@
 const request = require('supertest');
 const db = require('./db');
-const User = require('../../classes/user');
-
-let server = null;
+const User = require('../../models/user');
+const Genre = require('../../models/genre');
 
 
 describe('/api/genres', () => {
@@ -11,41 +10,49 @@ describe('/api/genres', () => {
     name: 'John Smith',
     email: 'john.smith@gmail.com',
     password: 'dummy',
-    isAdmin: true
+    isAdmin: 1
   };
+
+  let server = null;
 
   beforeEach(() => {
     server = require('../../index');
   });
 
   afterEach(async () => {
-    server.close();
-
     await db.deleteAll('User');
     await db.deleteAll('Genre');
+
+    await server.close();
   });
+
+
+  //
+  // GET
+  //
 
   describe('GET /', () => {
 
     it('should return all genres', async () => {
-      await db.insert('Genre', { Name: 'Genre1' });
-      await db.insert('Genre', { Name: 'Genre2' });
+      await db.insert('Genre', { name: 'Genre1' });
+      await db.insert('Genre', { name: 'Genre2' });
     
       const res = await request(server).get('/api/genres');
 
       expect(res.status).toBe(200);
       expect(res.body.length).toBe(2);
-      expect(res.body.some(g => g.Name === 'Genre1')).toBeTruthy();
-      expect(res.body.some(g => g.Name === 'Genre2')).toBeTruthy();
+      expect(res.body.some(g => g.name === 'Genre1')).toBeTruthy();
+      expect(res.body.some(g => g.name === 'Genre2')).toBeTruthy();
     });
 
   });
 
+
   describe('GET /:id', () => {
 
     it('should return a genre if valid id is passed', async () => {
-      const genre = { Name: 'Genre1' };
-      const id = await db.insert('Genre', genre);
+      const genre = { name: 'Genre1' };
+      const { id } = await db.insert('Genre', genre);
     
       const res = await request(server).get('/api/genres/' + id);
 
@@ -64,12 +71,16 @@ describe('/api/genres', () => {
   });
 
 
+  //
+  // POST
+  //
+
   describe('POST /', () => {
 
     let token = '';
 
-    async function execute(body) {
-      return await request(server)
+    function execute(body) {
+      return request(server)
         .post('/api/genres/')
         .set('x-auth-token', token)
         .send(body);
@@ -77,7 +88,6 @@ describe('/api/genres', () => {
 
     beforeEach(async () => {
       const id = await db.insert('User', user);
-
       token = User.generateToken({ id, ...user });
     });
 
@@ -113,25 +123,28 @@ describe('/api/genres', () => {
   });
 
 
+  //
+  // PUT
+  //
+
   describe('PUT /:id', () => {
 
     let token = '';
 
-    async function execute(id, body) {
-      return await request(server)
+    function execute(id, body) {
+      return request(server)
         .put('/api/genres/' + id)
         .set('x-auth-token', token)
         .send(body);
     }
 
     beforeEach(async () => {
-      const id = await db.insert('User', user);
-
+      const { id } = await db.insert('User', user);
       token = User.generateToken({ id, ...user });
     });
 
     it('should update a genre if valid id is given', async () => {
-      const id = await db.insert('Genre', { Name: 'Genre1' });
+      const { id } = await db.insert('Genre', { name: 'Genre1' });
       const genre = { name: 'Genre2' }
 
       const res = await execute(id, genre);
@@ -140,7 +153,7 @@ describe('/api/genres', () => {
     });
 
     it('should return 400 if invalid id is given', async () => {
-      const id = await db.insert('Genre', { Name: 'Genre1' });
+      const { id } = await db.insert('Genre', { name: 'Genre1' });
       const genre = { name: 'Genre2' }
 
       const res = await execute(999, genre);
@@ -151,24 +164,27 @@ describe('/api/genres', () => {
   });
 
 
+  //
+  // DELETE
+  //
+
   describe('DELETE /:id', () => {
 
     let token = '';
 
-    async function execute(id) {
-      return await request(server)
+    function execute(id) {
+      return request(server)
         .delete('/api/genres/' + id)
         .set('x-auth-token', token);
     }
 
     beforeEach(async () => {
-      const id = await db.insert('User', user);
-
+      const { id } = await db.insert('User', user);
       token = User.generateToken({ id, ...user });
     });
 
     it('should delete a genre if valid id is given', async () => {
-      const id = await db.insert('Genre', { Name: 'Genre1' });
+      const { id } = await db.insert('Genre', { name: 'Genre1' });
 
       const res = await execute(id);
 
@@ -176,7 +192,7 @@ describe('/api/genres', () => {
     });
 
     it('should return 400 if invalid id is given', async () => {
-      const id = await db.insert('Genre', { Name: 'Genre1' });
+      const { id } = await db.insert('Genre', { name: 'Genre1' });
 
       const res = await execute(1);
 
@@ -184,8 +200,5 @@ describe('/api/genres', () => {
     });
 
   });
-
-
-
 
 });

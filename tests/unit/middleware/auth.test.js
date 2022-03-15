@@ -1,5 +1,5 @@
 const auth = require('../../../middleware/auth');
-const User = require('../../../classes/user');
+const User = require('../../../models/user');
 
 
 describe('auth middleware', () => {
@@ -9,7 +9,7 @@ describe('auth middleware', () => {
       id: 1,
       name: 'John Smith',
       email: 'john.smith@gmail.com',
-      isAdmin: false
+      isAdmin: 0
     };
   
     token = User.generateToken(user);

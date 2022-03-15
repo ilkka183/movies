@@ -46,3 +46,52 @@ res.status(...).sendValues is not a function
 res.status(...).sendValues is not a function
 CSSConditionRule is not defined
 CSSConditionRule is not defined
+reg is not defined
+reg is not defined
+reg is not defined
+reg is not defined
+reg is not defined
+reg is not defined
+reg is not defined
+reg is not defined
+rea is not defined
+Customer.findById is not a function
+Customer.findById is not a function
+Customer.findById is not a function
+Customer.findById is not a function
+Customer.findById is not a function
+Customer.findById is not a function
+Customer.findById is not a function
+Customer.findById is not a function
+Movie is not defined
+Rental is not defined
+Rental.find is not a function
+Rental.find is not a function
+ER_DUP_ENTRY: Duplicate entry 'Genre1' for key 'genre.name'
+ER_DUP_ENTRY: Duplicate entry 'Genre1' for key 'genre.name'
+ER_DUP_ENTRY: Duplicate entry 'Genre1' for key 'genre.name'
+ER_DUP_ENTRY: Duplicate entry 'Genre1' for key 'genre.name'
+body is not defined
+ER_TRUNCATED_WRONG_VALUE: Incorrect date value: '1647355876164' for column 'dateReturned' at row 1
+ER_TRUNCATED_WRONG_VALUE: Incorrect date value: '1647355876210' for column 'dateReturned' at row 1
+(intermediate value).format is not a function
+(intermediate value).format is not a function
+(intermediate value).format is not a function
+(intermediate value).format is not a function
+(intermediate value).format is not a function
+(intermediate value).format is not a function
+ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') WHERE Id = 349' at line 1
+ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ') WHERE Id = 350' at line 1
+ER_BAD_FIELD_ERROR: Unknown column 'rentalFee' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'rentalFee' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'rentalFee' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'rentalFee' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'rentalFee' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'rentalFee' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'rentalFee' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'rentalFee' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'rentalFee' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'numberInStock' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'numberInStock' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'numberInStock' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'numberInStock' in 'field list'
