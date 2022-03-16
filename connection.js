@@ -54,6 +54,6 @@ class Connection {
   }
 }
 
-var connection = new Connection();
+const connection = new Connection();
 
 module.exports = connection;

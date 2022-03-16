@@ -92,6 +92,7 @@ describe('/api/genres', () => {
 
     beforeEach(async () => {
       const id = await db.insert('User', user);
+
       token = User.generateToken({ id, ...user });
     });
 
@@ -149,6 +150,7 @@ describe('/api/genres', () => {
 
     beforeEach(async () => {
       const { id } = await db.insert('User', user);
+
       token = User.generateToken({ id, ...user });
     });
 
@@ -192,6 +194,7 @@ describe('/api/genres', () => {
 
     beforeEach(async () => {
       const { id } = await db.insert('User', user);
+      
       token = User.generateToken({ id, ...user });
     });
 
