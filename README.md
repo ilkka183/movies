@@ -34,13 +34,13 @@ All common code have been set into middlewares. In the routes are just core hand
 Javascript model classes for each MySQL table.
 
 ### rest
-Here is a RESTClient test file for each routes.
+Here are the RESTClient test files for each routes.
 
 ### routes
-All the routes have been collected in this folder. Endpoins have been implemented into separate files.
+All the routes have been collected in this folder. Endpoints have been implemented into separate files.
 
 ### startup
 index.js file has kept as simple as possible. All the initialization code have been store on this folder on separate files.
 
 ### tests
-Here are unit and intergation tests on the separate folder.
+Here are the unit and intergation tests on separate folders.
