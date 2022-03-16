@@ -28,19 +28,19 @@ Some common code.
 Configuation settings.
 
 ### middleware
-All common code have been set into middlewares. In the routes are just core handling.
+All common code have been set into middlewares. Here are some authorization and error handling middlewares. In the routes are just core handling.
 
 ### models
-Javascript model classes for each MySQL table.
+Javascript classes for each MySQL table. They have some finding and validating methods..
 
 ### rest
 Here are the RESTClient test files for each routes.
 
 ### routes
-All the routes have been collected in this folder. Endpoints have been implemented into separate files.
+All the routes have been collected into this folder. Endpoints have been implemented into separate files.
 
 ### startup
-index.js file has kept as simple as possible. All the initialization code have been store on this folder on separate files.
+index.js file has kept as simple as possible. All the initialization code have been stored into this folder on separate files.
 
 ### tests
-Here are the unit and intergation tests on separate folders.
+Here are all the unit and intergation tests on separate folders.
