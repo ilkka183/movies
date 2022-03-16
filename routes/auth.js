@@ -6,7 +6,6 @@ const User = require('../models/user');
 const router = express.Router();
 
 
-// Validation for login
 function validateUser(user) {
   if (!user.email)
     return { message: 'Email is required.' }
@@ -19,13 +18,15 @@ function validateUser(user) {
 
 
 router.post('/', validate(validateUser), wrap(async (req, res) => {
-  const user = await User.findByEmail(req.body.email);
+  const invalidEmailOrPassword = 'Invalid email or password.';
 
+  const user = await User.findByEmail(req.body.email);
+ 
   if (!user)
-    return res.status(400).send('Invalid email or password.');
+    return res.status(400).send(invalidEmailOrPassword);
 
   if (user.password !== req.body.password)
-    return res.status(400).send('Invalid email or password.');
+    return res.status(400).send(invalidEmailOrPassword);
 
   const token = User.generateToken(user);
 

@@ -31,6 +31,7 @@ describe('/api/returns', () => {
       .send(body);
   }
 
+
   beforeEach(async () => {
     server = require('../../index');
 
@@ -43,6 +44,7 @@ describe('/api/returns', () => {
     token = User.generateToken({ id, ...user });
   });
 
+
   afterEach(async () => {
     await db.deleteAll('Rental');
     await db.deleteAll('Movie');
@@ -53,11 +55,13 @@ describe('/api/returns', () => {
     await server.close();
   });
 
+
   it('should work!', async () => {
     const obj = await Rental.findById(rental.id);
 
     expect(obj).not.toBeNull();
   });
+
 
   it('should return 401 if client is not logged in', async () => {
     token = '';
@@ -67,17 +71,20 @@ describe('/api/returns', () => {
     expect(res.status).toBe(401);
   });
 
+
   it('should return 400 if customerId is not provided', async () => {
     const res = await execute({ movieId: movie.id });
 
     expect(res.status).toBe(400);
   });
 
+
   it('should return 400 if movieId is not provided', async () => {
     const res = await execute({ customerId: customer.id });
 
     expect(res.status).toBe(400);
   });
+
 
   it('should return 404 if no reltal found for this customer/movie', async () => {
     await db.deleteAll('Rental');
@@ -87,6 +94,7 @@ describe('/api/returns', () => {
     expect(res.status).toBe(404);
   });
 
+
   it('should return 400 if rental already processed', async () => {
     await db.update('Rental', rental.id, { dateReturned: '2022-03-15' });
 
@@ -95,11 +103,13 @@ describe('/api/returns', () => {
     expect(res.status).toBe(400);
   });
 
+
   it('should return 200 if we have avalid request', async () => {
     const res = await execute({ customerId: customer.id, movieId: movie.id });
 
     expect(res.status).toBe(200);
   });
+
 
   it('should set the returnDate if input is valid', async () => {
     const res = await execute({ customerId: customer.id, movieId: movie.id });
@@ -108,6 +118,7 @@ describe('/api/returns', () => {
 
     expect(obj.dateReturned).toBeDefined();
   });
+
 
   it('should set the rental fee if input is valid', async () => {
     await db.update('Rental', rental.id, { dateOut: '2022-03-10' });
@@ -119,7 +130,8 @@ describe('/api/returns', () => {
     expect(obj.rentalFee).toBeDefined();
   });
 
-  it('should set increase the movie stock if input is valid', async () => {
+
+  it('should increase the movie stock if input is valid', async () => {
     const res = await execute({ customerId: customer.id, movieId: movie.id });
 
     const obj = await Movie.findById(movie.id);
@@ -127,6 +139,7 @@ describe('/api/returns', () => {
     expect(obj.numberInStock).toBe(movie.numberInStock + 1);
   });
 
+  
   it('should return the rental if input is valid', async () => {
     const res = await execute({ customerId: customer.id, movieId: movie.id });
 

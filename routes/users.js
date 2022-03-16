@@ -10,7 +10,7 @@ const router = express.Router();
 const notFound = 'The user with the given ID was not found.';
 
 
-// Validation for registration
+// Validation for registration data
 function validateUser(user) {
   if (!user.name)
     return { message: 'Name is required.' }

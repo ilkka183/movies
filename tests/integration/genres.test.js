@@ -1,7 +1,7 @@
 const request = require('supertest');
 const db = require('./db');
-const User = require('../../models/user');
 const Genre = require('../../models/genre');
+const User = require('../../models/user');
 
 
 describe('/api/genres', () => {
@@ -15,9 +15,11 @@ describe('/api/genres', () => {
 
   let server = null;
 
+
   beforeEach(() => {
     server = require('../../index');
   });
+
 
   afterEach(async () => {
     await db.deleteAll('User');
@@ -60,6 +62,7 @@ describe('/api/genres', () => {
       expect(res.body).toMatchObject(genre);
     });
 
+
     it('should return a 404 if invalid id is passed', async () => {
       let res = await request(server).get('/api/genres/1');
       expect(res.status).toBe(404);
@@ -86,10 +89,12 @@ describe('/api/genres', () => {
         .send(body);
     }
 
+
     beforeEach(async () => {
       const id = await db.insert('User', user);
       token = User.generateToken({ id, ...user });
     });
+
 
     it('should return 401 if client is not logged in', async () => {
       token = '';
@@ -99,17 +104,20 @@ describe('/api/genres', () => {
       expect(res.status).toBe(401);
     });
 
+
     it('should return 400 if genre is less than 5 character', async () => {
       const res = await execute({ name: '1234' });
 
       expect(res.status).toBe(400);
     });
 
+
     it('should return 400 if genre is more than 50 character', async () => {
       const res = await execute({ name: new Array(52).join('a') });
 
       expect(res.status).toBe(400);
     });
+
 
     it('should save the genre if it is valid', async () => {
       const res = await execute({ name: 'Genre1' });
@@ -138,10 +146,12 @@ describe('/api/genres', () => {
         .send(body);
     }
 
+
     beforeEach(async () => {
       const { id } = await db.insert('User', user);
       token = User.generateToken({ id, ...user });
     });
+
 
     it('should update a genre if valid id is given', async () => {
       const { id } = await db.insert('Genre', { name: 'Genre1' });
@@ -151,6 +161,7 @@ describe('/api/genres', () => {
 
       expect(res.status).toBe(200);
     });
+
 
     it('should return 400 if invalid id is given', async () => {
       const { id } = await db.insert('Genre', { name: 'Genre1' });
@@ -178,10 +189,12 @@ describe('/api/genres', () => {
         .set('x-auth-token', token);
     }
 
+
     beforeEach(async () => {
       const { id } = await db.insert('User', user);
       token = User.generateToken({ id, ...user });
     });
+
 
     it('should delete a genre if valid id is given', async () => {
       const { id } = await db.insert('Genre', { name: 'Genre1' });
@@ -191,6 +204,7 @@ describe('/api/genres', () => {
       expect(res.status).toBe(200);
     });
 
+    
     it('should return 400 if invalid id is given', async () => {
       const { id } = await db.insert('Genre', { name: 'Genre1' });
 
