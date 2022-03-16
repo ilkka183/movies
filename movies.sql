@@ -5,8 +5,8 @@
   Command line:
   mysql -u movies -p
   mysql -u movies -p < movies.sql
-  mysql --user=root --password=OhiOn330!
-  mysql --user=root --password=OhiOn330! < movies.sql
+  mysql --user=root --password=huuhaa
+  mysql --user=root --password=huuhaa < movies.sql
 
 */
 
@@ -15,7 +15,7 @@ CREATE DATABASE movies CHARACTER SET utf8mb4;
 CONNECT movies;
 SET NAMES 'utf8';
 
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'OhiOn330!';
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'huuhaa';
 flush privileges;
 
 
