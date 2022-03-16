@@ -6,10 +6,9 @@ class Logger {
   }
 
   log(text) {
-    this.file.write(new Date().toISOString());
-    this.file.write(' ');
-    this.file.write(text);
-    this.file.write('\n');
+    const now = new Date().toISOString();
+
+    this.file.write(`${now} ${text}\n`);
 
     console.log(text);
   }
