@@ -1,11 +1,13 @@
 const express = require('express');
+const validate = require('../middleware/validate');
 const wrap = require('../middleware/wrap');
 const User = require('../models/user');
 
 const router = express.Router();
 
 
-function validate(user) {
+// Validation for login
+function validateUser(user) {
   if (!user.email)
     return { message: 'Email is required.' }
 
@@ -16,12 +18,7 @@ function validate(user) {
 }
 
 
-router.post('/', wrap(async (req, res) => {
-  const error = validate(req.body);
-
-  if (error)
-    return res.status(400).send(error.message);
-
+router.post('/', validate(validateUser), wrap(async (req, res) => {
   const user = await User.findByEmail(req.body.email);
 
   if (!user)

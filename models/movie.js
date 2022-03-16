@@ -10,6 +10,13 @@ class Movie extends Entity {
   
     return null;
   }
+
+  static validate(movie) {
+    if (!movie.title)
+      return { message: 'Title is required.' }
+  
+    return null
+  }
 }
 
 module.exports = Movie;

@@ -10,6 +10,13 @@ class Customer extends Entity {
   
     return null;
   }
+
+  static validate(customer) {
+    if (!customer.name)
+      return { message: 'Name is required.' }
+  
+    return null
+  }
 }
 
 module.exports = Customer;

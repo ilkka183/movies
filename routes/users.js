@@ -1,7 +1,8 @@
 const express = require('express');
 const connection = require('../connection');
-const wrap = require('../middleware/wrap');
 const auth = require('../middleware/auth');
+const validate = require('../middleware/validate');
+const wrap = require('../middleware/wrap');
 const User = require('../models/user');
 
 const router = express.Router();
@@ -9,7 +10,8 @@ const router = express.Router();
 const notFound = 'The user with the given ID was not found.';
 
 
-function validate(user) {
+// Validation for registration
+function validateUser(user) {
   if (!user.name)
     return { message: 'Name is required.' }
 
@@ -28,6 +30,7 @@ router.get('/', wrap(async (req, res) => {
   res.send(results);
 }));
 
+
 router.get('/me', auth, wrap(async (req, res) => {
   const id = req.user.id;
 
@@ -40,12 +43,7 @@ router.get('/me', auth, wrap(async (req, res) => {
 }));
 
 
-router.post('/', wrap(async (req, res) => {
-  const error = validate(req.body);
-
-  if (error)
-    return res.status(400).send(error.message);
-
+router.post('/', validate(validateUser), wrap(async (req, res) => {
   let user = await User.findByEmail(req.body.email);
 
   if (user !== null)

@@ -1,29 +1,25 @@
 const express = require('express');
 const connection = require('../connection');
-const wrap = require('../middleware/wrap');
-const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
+const auth = require('../middleware/auth');
+const validate = require('../middleware/validate');
+const validateId = require('../middleware/validateId');
+const wrap = require('../middleware/wrap');
+const Movie = require('../models/movie');
 
 const router = express.Router();
 
 const notFound = 'The movie with the given ID was not found.';
 
 
-function validate(item) {
-  if (!item.title)
-    return { message: 'Title is required.' }
-
-  return null
-}
-
-
 router.get('/', wrap(async (req, res) => {
   const { results } = await connection.query('SELECT * FROM Movie ORDER BY Id');
+  
   res.send(results);
 }));
 
 
-router.get('/:id', wrap(async (req, res) => {
+router.get('/:id', validateId, wrap(async (req, res) => {
   const id = parseInt(req.params.id);
 
   const { results } = await connection.query('SELECT * FROM Movie WHERE Id = ' + id);
@@ -35,12 +31,7 @@ router.get('/:id', wrap(async (req, res) => {
 }));
 
 
-router.post('/', auth, wrap(async (req, res) => {
-  const error = validate(req.body);
-
-  if (error)
-    return res.status(400).send(error.message);
-
+router.post('/', [auth, validate(Movie.validate)], wrap(async (req, res) => {
   const body = { ...req.body };
 
   const { results } = await connection.queryValues('INSERT INTO Movie SET ?', body);
@@ -51,13 +42,8 @@ router.post('/', auth, wrap(async (req, res) => {
 }));
 
 
-router.put('/:id', auth, wrap(async (req, res) => {
+router.put('/:id', [auth, validateId, validate(Movie.validate)], wrap(async (req, res) => {
   const id = parseInt(req.params.id);
-
-  const error = validate(req.body);
-
-  if (error)
-    return res.status(400).send(error.message);
 
   const body = { ...req.body, id }
 
@@ -66,7 +52,7 @@ router.put('/:id', auth, wrap(async (req, res) => {
 }));
 
 
-router.delete('/:id', [auth], wrap(async (req, res) => {
+router.delete('/:id', [auth, admin, validateId], wrap(async (req, res) => {
   const id = parseInt(req.params.id);
 
   const { results } = await connection.query('DELETE FROM Movie WHERE Id = ' + id);

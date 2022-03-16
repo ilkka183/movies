@@ -95,3 +95,50 @@ ER_BAD_FIELD_ERROR: Unknown column 'numberInStock' in 'field list'
 ER_BAD_FIELD_ERROR: Unknown column 'numberInStock' in 'field list'
 ER_BAD_FIELD_ERROR: Unknown column 'numberInStock' in 'field list'
 ER_BAD_FIELD_ERROR: Unknown column 'numberInStock' in 'field list'
+Rental.findByCustomerAndMovieId is not a function
+Rental.findByCustomerAndMovieId is not a function
+Rental.findByCustomerAndMovieId is not a function
+Rental.findByCustomerAndMovieId is not a function
+Rental.findByCustomerAndMovieId is not a function
+Rental.findByCustomerAndMovieId is not a function
+Rental.findByCustomerAndMovieId is not a function
+Rental.findByCustomerAndMovieId is not a function
+Rental.findByCustomerAndMovieId is not a function
+Rental.findByCustomerAndMovieId is not a function
+Rental.findByCustomerAndMovieId is not a function
+Rental.findByCustomerAndMovieId is not a function
+Rental.findByCustomerAndMovieId is not a function
+Rental.findByCustomerAndMovieId is not a function
+rental is not defined
+rental is not defined
+rental is not defined
+rental is not defined
+rental is not defined
+ER_BAD_FIELD_ERROR: Unknown column 'NaN' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'NaN' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'NaN' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'NaN' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'NaN' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'NaN' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'NaN' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'NaN' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'NaN' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'NaN' in 'field list'
+free is not defined
+free is not defined
+free is not defined
+free is not defined
+free is not defined
+ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '[object Object]' at line 1
+ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '[object Object]' at line 1
+ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '[object Object]' at line 1
+ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '[object Object]' at line 1
+ER_PARSE_ERROR: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '[object Object]' at line 1
+ER_BAD_FIELD_ERROR: Unknown column 'NaN' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'NaN' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'NaN' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'NaN' in 'field list'
+ER_BAD_FIELD_ERROR: Unknown column 'NaN' in 'field list'
+Cannot enqueue Query after fatal error.
+Cannot enqueue Query after fatal error.
+Cannot enqueue Query after fatal error.
