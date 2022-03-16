@@ -2,13 +2,22 @@
 This is a simple movie rental service. It is a REST API created by node.js express. Movies are in a MySQL database. Jason Web Tokens are used for authentication.
 
 ## MySQL Tables
-There are two databases. movies.sql for actual database and movies_test.sql for intergation tests.
+There are two databases. movies.sql for the actual database and movies_test.sql for the intergation tests.
 
 ### User
+This API required an authorization. User must first register and then login in order to use the API. User data is stored into this table.
+
 ### Genre
+Movie genres.
+
 ### Movie
+Movies.
+
 ### Customer
+Customers who rent the movies.
+
 ### Rental
+A rental object with customer and movie IDs.
 
 ## Folders
 

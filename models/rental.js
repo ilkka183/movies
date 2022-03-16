@@ -21,7 +21,7 @@ class Rental extends Entity {
   }
 
   static async return(rental, customer, movie) {
-    const fee = 2*movie.dailyRentalRate;
+    const fee = movie.dailyRentalRate;
 
     await connection.queryValues('UPDATE Rental SET dateReturned = CURDATE(), rentalFee = ? WHERE id = ?', [fee, rental.id]);
     await connection.queryValues('UPDATE Movie SET numberInStock = numberInStock + 1 WHERE id = ?', [rental.movieId]);
