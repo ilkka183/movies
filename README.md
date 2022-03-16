@@ -8,20 +8,22 @@ This is a simple movie rental service. It is a REST API created by node.js expre
 ### Customer
 ### Rental
 
-## routes
+## Folders
+
+### routes
 All the routes have been collected in this folder. Endpoins have been implemented into separate files.
 
-## rest
+### rest
 Here is a RESTClient test file for each routes.
 
-## models
+### models
 Javascript model classes for each MySQL table.
 
-## middleware
-All common code have been set into middlewares. In the routes ara just basic handling.
+### middleware
+All common code have been set into middlewares. In the routes are just core handling.
 
-## startup
+### startup
 index.js file has kept as simple as possible. All the initialization code have been store on this folder on separate files.
 
-## test
+### test
 Here are unit and intergation tests on the separate folder.
