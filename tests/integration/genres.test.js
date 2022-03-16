@@ -13,7 +13,7 @@ describe('/api/genres', () => {
     isAdmin: 1
   };
 
-  let server = null;
+  let server;
 
 
   beforeEach(() => {
@@ -80,7 +80,7 @@ describe('/api/genres', () => {
 
   describe('POST /', () => {
 
-    let token = '';
+    let token;
 
     function execute(body) {
       return request(server)
@@ -138,7 +138,7 @@ describe('/api/genres', () => {
 
   describe('PUT /:id', () => {
 
-    let token = '';
+    let token;
 
     function execute(id, body) {
       return request(server)
@@ -183,7 +183,7 @@ describe('/api/genres', () => {
 
   describe('DELETE /:id', () => {
 
-    let token = '';
+    let token;
 
     function execute(id) {
       return request(server)
@@ -194,7 +194,7 @@ describe('/api/genres', () => {
 
     beforeEach(async () => {
       const { id } = await db.insert('User', user);
-      
+
       token = User.generateToken({ id, ...user });
     });
 

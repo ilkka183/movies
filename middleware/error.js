@@ -1,9 +1,7 @@
-const fs = require('fs');
-
-const logger = fs.createWriteStream('log.txt', { flags: 'a' });
+const logger = require('../common/logger');
 
 module.exports = (err, req, res, next) => {
-  logger.write(err.message + '\n');
+  logger.error(err.message);
     
   res.status(500).send('Something failed.');
 } ; 

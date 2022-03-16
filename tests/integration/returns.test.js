@@ -14,7 +14,7 @@ describe('/api/returns', () => {
     isAdmin: 1
   };
 
-  let server = null;
+  let server;
 
 
   beforeEach(() => {
@@ -39,11 +39,11 @@ describe('/api/returns', () => {
 
   describe('POST /', () => {
 
-    let token = '';
+    let token;
 
-    let customer = null;
-    let movie = null;
-    let rental = null;
+    let customer;
+    let movie;
+    let rental;
   
     function execute(body) {
       return request(server)
