@@ -13,58 +13,52 @@ const notFound = 'The customer with the given ID was not found.';
 
 
 router.get('/', wrap(async (req, res) => {
-  const { results } = await connection.query('SELECT * FROM Customer ORDER BY id');
+  const rows = await connection.selectMany('SELECT * FROM Customer ORDER BY id');
 
-  res.send(results);
+  res.send(rows);
 }));
 
 
 router.get('/:id', validateId, wrap(async (req, res) => {
   const id = parseInt(req.params.id);
 
-  const { results } = await connection.query('SELECT * FROM Customer WHERE id = ' + id);
+  const row = await connection.selectSingle('Customer', id);
 
-  if (results.length === 0)
+  if (!row)
     return res.status(404).send(notFound);
       
-  res.send(results[0]);
+  res.send(row);
 }));
 
 
 router.post('/', [auth, validate(Customer.validate)], wrap(async (req, res, next) => {
-  const body = { ...req.body };
+  const result = await connection.isert('Customer', req.body);
 
-  const { results } = await connection.queryValues('INSERT INTO Customer SET ?', body);
-
-  body.id = results.insertId;
-    
-  res.send(body);
+  res.send(result);
 }));
 
 
 router.put('/:id', [auth, validateId, validate(Customer.validate)], wrap(async (req, res, next) => {
   const id = parseInt(req.params.id);
 
-  const body = { ...req.body, id }
+  const result = await connection.update('Customer', id, req.body);
 
-  const { results } = await connection.queryValues('UPDATE Customer SET name = ? WHERE id = ?', [body.name, id]);
-
-  if (results.affectedRows === 0)
+  if (!result)
     return res.status(404).send(notFound);
 
-  res.send(body);
+  res.send(result);
 }));
 
 
 router.delete('/:id', [auth, admin, validateId], wrap(async (req, res, next) => {
   const id = parseInt(req.params.id);
 
-  const { results } = await connection.query('DELETE FROM Customer WHERE id = ' + id);
+  const result = await connection.delete('DELETE', id);
 
-  if (results.affectedRows === 0)
+  if (!result)
     return res.status(404).send(notFound);
       
-  res.send(results);
+  res.send(result);
 }));
 
 

@@ -1,5 +1,5 @@
 const request = require('supertest');
-const db = require('./db');
+const connection = require('../../connection');
 const Movie = require('../../models/movie');
 const Rental = require('../../models/rental');
 const User = require('../../models/user');
@@ -23,11 +23,11 @@ describe('/api/returns', () => {
 
 
   afterEach(async () => {
-    await db.deleteAll('Rental');
-    await db.deleteAll('Movie');
-    await db.deleteAll('Genre');
-    await db.deleteAll('Customer');
-    await db.deleteAll('User');
+    await connection.deleteAll('Rental');
+    await connection.deleteAll('Movie');
+    await connection.deleteAll('Genre');
+    await connection.deleteAll('Customer');
+    await connection.deleteAll('User');
 
     await server.close();
   });
@@ -54,14 +54,14 @@ describe('/api/returns', () => {
   
   
     beforeEach(async () => {
-      const { id } = await db.insert('User', user);
+      const { id } = await connection.insert('User', user);
 
       token = User.generateToken({ id, ...user });
 
-      customer = await db.insert('Customer', { name: 'Matt Damon' });
-      const genre = await db.insert('Genre', { name: 'Scifi'  });
-      movie = await db.insert('Movie', { title: 'Star Wars', genreId: genre.id, numberInStock: 10, dailyRentalRate: 2  });
-      rental = await db.insert('Rental', { customerId: customer.id, movieId: movie.id });
+      customer = await connection.insert('Customer', { name: 'Matt Damon' });
+      const genre = await connection.insert('Genre', { name: 'Scifi'  });
+      movie = await connection.insert('Movie', { title: 'Star Wars', genreId: genre.id, numberInStock: 10, dailyRentalRate: 2  });
+      rental = await connection.insert('Rental', { customerId: customer.id, movieId: movie.id });
     });
   
   
@@ -89,7 +89,7 @@ describe('/api/returns', () => {
   
   
     it('should return 404 if no reltal found for this customer/movie', async () => {
-      await db.deleteAll('Rental');
+      await connection.deleteAll('Rental');
   
       const res = await execute({ customerId: customer.id, movieId: movie.id });
   
@@ -98,7 +98,7 @@ describe('/api/returns', () => {
   
   
     it('should return 400 if rental already processed', async () => {
-      await db.update('Rental', rental.id, { dateReturned: '2022-03-15' });
+      await connection.update('Rental', rental.id, { dateReturned: '2022-03-15' });
   
       const res = await execute({ customerId: customer.id, movieId: movie.id });
   
@@ -123,7 +123,7 @@ describe('/api/returns', () => {
   
   
     it('should set the rental fee if input is valid', async () => {
-      await db.update('Rental', rental.id, { dateOut: '2022-03-10' });
+      await connection.update('Rental', rental.id, { dateOut: '2022-03-10' });
   
       const res = await execute({ customerId: customer.id, movieId: movie.id });
   

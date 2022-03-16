@@ -40,17 +40,59 @@ class Connection {
     return promise;
   }
 
-  insert(tableName, values) {
-    const promise = new Promise((resolve, reject) => {
-      this.connection.query('INSERT INTO ' + tableName + ' SET ?', values, (error, results, fields) => {
-        if (error)
-          reject(error);
+  async selectMany(sql) {
+    const { results } = await this.query(sql);
     
-        resolve({ results, fields });
-      });
-    });
+    return results;
+  }
+  
+  async selectSingle(table, id) {
+    const { results } = await this.query(`SELECT * FROM ${table} WHERE id = ${id}`);
+    
+    if (results.length === 0)
+      return null;
+      
+    return results[0];
+  }
+  
+  async insert(table, body) {
+    const { results } = await this.queryValues(`INSERT INTO ${table} SET ?`, body);
+    
+    return { id: results.insertId, ...body }
+  }
+  
+  async update(table, id, body) {
+    let values = [];
+  
+    let sql = `UPDATE ${table} `;
+  
+    for (const key in body) {
+      sql += `SET ${key} = ? `;
+      values.push(body[key]);
+    }
+  
+    sql += 'WHERE id = ?';
+    values.push(id);
+  
+    const { results } = await this.queryValues(sql, values);
 
-    return promise;
+    if (results.affectedRows === 0)
+      return null;
+
+    return { ...body };
+  }
+  
+  async delete(table, id) {
+    const { results } = await this.queryValues(`DELETE FROM ${table} WHERE id = ?`, id);
+
+    if (results.affectedRows === 0)
+      return null;
+
+    return results;
+  }
+  
+  async deleteAll(table) {
+    return await this.query(`DELETE FROM ${table}`);
   }
 }
 

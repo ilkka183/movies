@@ -13,18 +13,18 @@ const notFound = 'The rental with the given ID was not found.';
 
 
 router.get('/', wrap(async (req, res) => {
-  const { results } = await connection.query('SELECT * FROM Rental');
+  const rows = await connection.selectMany('SELECT * FROM Rental');
 
-  res.send(results);
+  res.send(rows);
 }));
 
 
 router.get('/:customerId', wrap(async (req, res) => {
   const customerId = parseInt(req.params.customerId);
 
-  const { results } = await connection.query('SELECT * FROM Rental WHERE customerId = ' + customerId);
+  const row = await connection.selectSingle('SELECT * FROM Rental WHERE customerId = ' + customerId);
   
-  res.send(results);
+  res.send(row);
 }));
 
 

@@ -1,5 +1,5 @@
 const request = require('supertest');
-const db = require('./db');
+const connection = require('../../connection');
 const User = require('../../models/user');
 
 let server;
@@ -27,7 +27,7 @@ describe('auth middleware', () => {
   beforeEach(async () => {
     server = require('../../index');
 
-    const { id } = await db.insert('User', user);
+    const { id } = await connection.insert('User', user);
 
     token = User.generateToken({ id, ...user });
   });
@@ -36,8 +36,8 @@ describe('auth middleware', () => {
   afterEach(async () => {
     server.close();
 
-    await db.deleteAll('Genre');
-    await db.deleteAll('User');
+    await connection.deleteAll('Genre');
+    await connection.deleteAll('User');
   });
 
 

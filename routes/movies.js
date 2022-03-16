@@ -13,58 +13,52 @@ const notFound = 'The movie with the given ID was not found.';
 
 
 router.get('/', wrap(async (req, res) => {
-  const { results } = await connection.query('SELECT * FROM Movie ORDER BY Id');
+  const rows = await connection.selectMany('SELECT * FROM Movie ORDER BY Id');
   
-  res.send(results);
+  res.send(rows);
 }));
 
 
 router.get('/:id', validateId, wrap(async (req, res) => {
   const id = parseInt(req.params.id);
 
-  const { results } = await connection.query('SELECT * FROM Movie WHERE id = ' + id);
+  const row = await connection.selectSingle('Movie', id);
   
-  if (results.length === 0)
+  if (!row)
     return res.status(404).send(notFound);
 
-  res.send(results[0]);
+  res.send(row);
 }));
 
 
 router.post('/', [auth, validate(Movie.validate)], wrap(async (req, res) => {
-  const body = { ...req.body };
-
-  const { results } = await connection.queryValues('INSERT INTO Movie SET ?', body);
+  const result = await connection.insert('Movie', req.body);
   
-  body.id = results.insertId;
-
-  res.send(results);
+  res.send(result);
 }));
 
 
 router.put('/:id', [auth, validateId, validate(Movie.validate)], wrap(async (req, res) => {
   const id = parseInt(req.params.id);
 
-  const body = { ...req.body, id }
+  const result = await connection.update('Movie', id, req.body);
 
-  const { results } = await connection.queryValues('UPDATE Movie SET title = ? WHERE id = ?', [body.title, id]);
-
-  if (results.affectedRows === 0)
+  if (!result)
     return res.status(404).send(notFound);
 
-  res.send(results);
+  res.send(result);
 }));
 
 
 router.delete('/:id', [auth, admin, validateId], wrap(async (req, res) => {
   const id = parseInt(req.params.id);
 
-  const { results } = await connection.query('DELETE FROM Movie WHERE id = ' + id);
+  const result = await connection.delete('DELETE', id);
   
-  if (results.affectedRows === 0)
+  if (!result)
     return res.status(404).send(notFound);
 
-  res.send(results);
+  res.send(result);
 }));
 
 
