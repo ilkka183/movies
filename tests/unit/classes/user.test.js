@@ -9,6 +9,7 @@ describe('User.generateToken', () => {
     expect(key).toBe('1234');
   });
 
+  
   it('should return a valid JWT', () => {
     const user = {
       id: 1,
