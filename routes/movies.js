@@ -22,7 +22,7 @@ router.get('/', wrap(async (req, res) => {
 router.get('/:id', validateId, wrap(async (req, res) => {
   const id = parseInt(req.params.id);
 
-  const { results } = await connection.query('SELECT * FROM Movie WHERE Id = ' + id);
+  const { results } = await connection.query('SELECT * FROM Movie WHERE id = ' + id);
   
   if (results.length === 0)
     return res.status(404).send(notFound);
@@ -47,7 +47,11 @@ router.put('/:id', [auth, validateId, validate(Movie.validate)], wrap(async (req
 
   const body = { ...req.body, id }
 
-  const { results } = await connection.queryValues('UPDATE Movie SET Title = ? WHERE Id = ?', [body.title, id]);
+  const { results } = await connection.queryValues('UPDATE Movie SET title = ? WHERE id = ?', [body.title, id]);
+
+  if (results.affectedRows === 0)
+    return res.status(404).send(notFound);
+
   res.send(results);
 }));
 
@@ -55,7 +59,7 @@ router.put('/:id', [auth, validateId, validate(Movie.validate)], wrap(async (req
 router.delete('/:id', [auth, admin, validateId], wrap(async (req, res) => {
   const id = parseInt(req.params.id);
 
-  const { results } = await connection.query('DELETE FROM Movie WHERE Id = ' + id);
+  const { results } = await connection.query('DELETE FROM Movie WHERE id = ' + id);
   
   if (results.affectedRows === 0)
     return res.status(404).send(notFound);

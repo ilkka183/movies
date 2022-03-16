@@ -13,7 +13,7 @@ const notFound = 'The customer with the given ID was not found.';
 
 
 router.get('/', wrap(async (req, res) => {
-  const { results } = await connection.query('SELECT * FROM Customer ORDER BY Id');
+  const { results } = await connection.query('SELECT * FROM Customer ORDER BY id');
 
   res.send(results);
 }));
@@ -22,7 +22,7 @@ router.get('/', wrap(async (req, res) => {
 router.get('/:id', validateId, wrap(async (req, res) => {
   const id = parseInt(req.params.id);
 
-  const { results } = await connection.query('SELECT * FROM Customer WHERE Id = ' + id);
+  const { results } = await connection.query('SELECT * FROM Customer WHERE id = ' + id);
 
   if (results.length === 0)
     return res.status(404).send(notFound);
@@ -42,10 +42,24 @@ router.post('/', [auth, validate(Customer.validate)], wrap(async (req, res, next
 }));
 
 
+router.put('/:id', [auth, validateId, validate(Customer.validate)], wrap(async (req, res, next) => {
+  const id = parseInt(req.params.id);
+
+  const body = { ...req.body, id }
+
+  const { results } = await connection.queryValues('UPDATE Customer SET name = ? WHERE id = ?', [body.name, id]);
+
+  if (results.affectedRows === 0)
+    return res.status(404).send(notFound);
+
+  res.send(body);
+}));
+
+
 router.delete('/:id', [auth, admin, validateId], wrap(async (req, res, next) => {
   const id = parseInt(req.params.id);
 
-  const { results } = await connection.query('DELETE FROM Customer WHERE Id = ' + id);
+  const { results } = await connection.query('DELETE FROM Customer WHERE id = ' + id);
 
   if (results.affectedRows === 0)
     return res.status(404).send(notFound);

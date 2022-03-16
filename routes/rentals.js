@@ -22,7 +22,7 @@ router.get('/', wrap(async (req, res) => {
 router.get('/:customerId', wrap(async (req, res) => {
   const customerId = parseInt(req.params.customerId);
 
-  const { results } = await connection.query('SELECT * FROM Rental WHERE CustomerId = ' + customerId);
+  const { results } = await connection.query('SELECT * FROM Rental WHERE customerId = ' + customerId);
   
   res.send(results);
 }));
