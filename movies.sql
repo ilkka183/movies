@@ -89,7 +89,7 @@ INSERT INTO Movie(title, genreId, numberInStock, dailyRentalRate) VALUES('Airpla
 INSERT INTO Movie(title, genreId, numberInStock, dailyRentalRate) VALUES('Wedding Crashers', 2, 7, 3.5);
 INSERT INTO Movie(title, genreId, numberInStock, dailyRentalRate) VALUES('Gone Girl', 3, 7, 3.5);
 INSERT INTO Movie(title, genreId, numberInStock, dailyRentalRate) VALUES('The Sixth Sense', 3, 7, 3.5);
-INSERT INTO Movie(title, genreId, numberInStock, dailyRentalRate) VALUES('The Avengers', 2, 7, 3.5);
+INSERT INTO Movie(title, genreId, numberInStock, dailyRentalRate) VALUES('The Avengers', 1, 7, 3.5);
 
 INSERT INTO Customer(name) VALUES('Matti Meikäläinen');
 INSERT INTO Customer(name) VALUES('Maija Meikäläinen');

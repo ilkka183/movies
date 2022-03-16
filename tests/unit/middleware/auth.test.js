@@ -4,14 +4,14 @@ const User = require('../../../models/user');
 
 describe('auth middleware', () => {
 
+  const user = {
+    id: 1,
+    name: 'John Smith',
+    email: 'john.smith@gmail.com',
+    isAdmin: 0
+  };
+
   it('should populate req.user with the payload of a valid JWT', () => {
-    const user = {
-      id: 1,
-      name: 'John Smith',
-      email: 'john.smith@gmail.com',
-      isAdmin: 0
-    };
-  
     token = User.generateToken(user);
 
     const req = {

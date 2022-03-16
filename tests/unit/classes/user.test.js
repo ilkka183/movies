@@ -3,6 +3,13 @@ const User = require('../../../models/user');
 
 describe('User.generateToken', () => {
 
+  const user = {
+    id: 1,
+    name: 'John Smith',
+    email: 'john.smith@gmail.com',
+    isAdmin: 1
+  };
+
   it('should return the private key', () => {
     const key = User.getPrivateKey();
 
@@ -11,13 +18,6 @@ describe('User.generateToken', () => {
 
   
   it('should return a valid JWT', () => {
-    const user = {
-      id: 1,
-      name: 'John Smith',
-      email: 'john.smith@gmail.com',
-      isAdmin: 1
-    };
-
     const token = User.generateToken(user);
     const decoded = User.decodeToken(token);
 
