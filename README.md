@@ -34,7 +34,7 @@ All common code have been set into middlewares. Here are some authorization and 
 Javascript classes for each MySQL table. They have some finding and validating methods.
 
 ### rest
-Here are the RESTClient test files for each routes. It's lake a Postman but can be used inside VisualCode.
+Here are the RESTClient test files for each routes. It's like a Postman but can be used inside VisualCode.
 
 ### routes
 All the routes have been collected into this folder. Endpoints have been implemented into separate files.
