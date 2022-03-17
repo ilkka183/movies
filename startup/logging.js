@@ -1,13 +1,15 @@
+const logger = require('../common/logger');
+
 module.exports = function () {
   process.on('uncaughtException', ex => {
-    console.error('WE GOT AN UNCAUGHT EXCEPTION');
-    // log
+    logger.error('WE GOT AN UNCAUGHT EXCEPTION');
+
     process.exit(1);
   });
   
   process.on('unhandledRejection', ex => {
-    console.error('WE GOT AN UNHANDLED REJECTION');
-    // log
+    logger.error('WE GOT AN UNHANDLED REJECTION');
+    
     process.exit(1);
   });
 }

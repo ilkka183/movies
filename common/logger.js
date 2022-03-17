@@ -5,16 +5,20 @@ class Logger {
     this.file = fs.createWriteStream('log.txt', { flags: 'a' });
   }
 
-  log(text) {
+  writeToFile(text) {
     const now = new Date().toISOString();
 
     this.file.write(`${now} ${text}\n`);
+  }
 
+  log(text) {
+    this.writeToFile(text);
     console.log(text);
   }
 
   error(text) {
-    this.log(text);
+    this.writeToFile(text);
+    console.error(text);
   }
 }
 
