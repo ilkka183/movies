@@ -10,7 +10,7 @@ x-auth-token: {{token}}
 content-type: application/json
 
 {
-    "name": "Scifiss"
+    "name": "Scifi"
 }
 ###
 PATCH {{endpoint}}/1
@@ -18,9 +18,9 @@ x-auth-token: {{token}}
 content-type: application/json
 
 {
-    "name": "Actions"
+    "name": "Actionss"
 }
 ###
-DELETE {{endpoint}}/9
+DELETE {{endpoint}}/19
 x-auth-token: {{adminToken}}
 
