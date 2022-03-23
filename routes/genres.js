@@ -2,64 +2,95 @@ const express = require('express');
 const connection = require('../connection');
 const admin = require('../middleware/admin');
 const auth = require('../middleware/auth');
-const validate = require('../middleware/validate');
 const validateId = require('../middleware/validateId');
-const wrap = require('../middleware/wrap');
 const Genre = require('../models/genre');
 
 const router = express.Router();
 
-const notFound = 'The genre with the given ID was not found.';
+
+router.get('/', async (req, res, next) => {
+  try {
+    const rows = await connection.selectMany('SELECT * FROM Genre ORDER BY Id');
+
+    res.send(rows.map(row => Genre.toObj(row)));
+  }
+  catch (ex) {
+    next(ex);
+  }
+});
 
 
-router.get('/', wrap(async (req, res) => {
-  const rows = await connection.selectMany('SELECT * FROM Genre ORDER BY id');
+router.get('/:id', validateId, async (req, res, next) => {
+  try {
+    const id = parseInt(req.params.id);
 
-  res.send(rows);
-}));
-
-
-router.get('/:id', validateId, wrap(async (req, res) => {
-  const id = parseInt(req.params.id);
-
-  const row = await connection.selectSingle('Genre', id);
-
-  if (!row)
-    return res.status(404).send(notFound);
-      
-  res.send(row);
-}));
+    const row = await connection.selectSingle('Genre', id);
+  
+    if (!row)
+      return res.status(404).send(Genre.notFoundMessage(id));
+        
+    res.send(Genre.toObj(row));
+  }
+  catch (ex) {
+    next(ex);
+  }
+});
 
 
-router.post('/', [auth, validate(Genre.validate)], wrap(async (req, res, next) => {
-  const result = await connection.insert('Genre', req.body);
+router.post('/', auth, async (req, res, next) => {
+  try {
+    const error = Genre.validate(req.body);
 
-  res.send(result);
-}));
+    if (error)
+      return res.status(400).send(error.message);
 
+    const row = await connection.insert('Genre', Genre.toRow(req.body));
 
-router.put('/:id', [auth, validateId, validate(Genre.validate)], wrap(async (req, res, next) => {
-  const id = parseInt(req.params.id);
-
-  const result = await connection.update('Genre', id, req.body);
-
-  if (!result)
-    return res.status(404).send(notFound);
-
-  res.send(result);
-}));
+    res.status(201).send(Genre.toObj(row));
+  }
+  catch (ex) {
+    next(ex);
+  }
+});
 
 
-router.delete('/:id', [auth, admin, validateId], wrap(async (req, res, next) => {
-  const id = parseInt(req.params.id);
+router.patch('/:id', [auth, validateId], async (req, res, next) => {
+  try {
+    const id = parseInt(req.params.id);
 
-  const result = await connection.delete('Genre', id);
+    const error = Genre.validate(req.body);
 
-  if (!result)
-    return res.status(404).send(notFound);
-      
-  res.send(result);
-}));
+    if (error)
+      return res.status(400).send(error.message);
+
+    const row = await connection.update('Genre', id, Genre.toRow(req.body));
+  
+    if (!row)
+      return res.status(404).send(Genre.notFoundMessage(id));
+  
+    res.send(Genre.toObj(row));
+  }
+  catch (ex) {
+    next(ex);
+  }
+});
+
+
+router.delete('/:id', [auth, /* admin, */ validateId], async (req, res, next) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    const row = await connection.delete('Genre', id);
+  
+    if (!row)
+      return res.status(404).send(Genre.notFoundMessage(id));
+        
+    res.send(Genre.toObj(row));
+  }
+  catch (ex) {
+    next(ex);
+  }
+});
 
 
 module.exports = router;

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const User = require('../../../models/user');
 
@@ -13,7 +14,7 @@ describe('User.generateToken', () => {
   it('should return the private key', () => {
     const key = User.getPrivateKey();
 
-    expect(key).toBe('1234');
+    expect(key).toBe(process.env.JWT_PRIVATE_KEY);
   });
 
   

@@ -2,6 +2,20 @@ const connection = require('../connection');
 const Entity = require('./entity');
 
 class Genre extends Entity {
+  static toObj(row) {
+    return {
+      id: row.Id,
+      name: row.Name
+    };
+  }
+  
+  static toRow(obj) {
+    return {
+      Id: obj.id,
+      Name: obj.name
+    };
+  }
+  
   static async findById(id) {
     const { results } = await connection.query('SELECT * FROM Genre WHERE id = ' + id);
 

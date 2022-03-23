@@ -24,9 +24,6 @@ A rental row with customer and movie IDs.
 ### common
 Some common code.
 
-### config
-Configuation settings.
-
 ### middleware
 All common code have been set into middlewares. Here are some authorization and error handling middlewares. In the routes are just core handling.
 

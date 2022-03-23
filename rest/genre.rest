@@ -10,17 +10,17 @@ x-auth-token: {{token}}
 content-type: application/json
 
 {
-    "name": "Scifi"
+    "name": "Scifiss"
 }
 ###
-PUT {{endpoint}}/1
+PATCH {{endpoint}}/1
 x-auth-token: {{token}}
 content-type: application/json
 
 {
-    "name": "Action"
+    "name": "Actions"
 }
 ###
-DELETE {{endpoint}}/5
+DELETE {{endpoint}}/9
 x-auth-token: {{adminToken}}
 

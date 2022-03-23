@@ -1,7 +1,7 @@
 const mysql = require('mysql');
 
 class Connection {
-  connect(config, callback) {
+  connect(config) {
     this.connection = mysql.createConnection(config);
 
     this.connection.connect(err => {
@@ -9,8 +9,6 @@ class Connection {
 
       if (err)
         throw new Error('Error connecting: ' + err.stack);
-  
-      callback();
     });
   }
 
@@ -41,54 +39,80 @@ class Connection {
   }
 
   async selectMany(sql) {
+    console.log(sql);
+
     const { results } = await this.query(sql);
-    
+
     return results;
   }
   
   async selectSingle(table, id) {
-    const { results } = await this.query(`SELECT * FROM ${table} WHERE id = ${id}`);
+    const sql = `SELECT * FROM ${table} WHERE Id = ${id}`;
+    console.log(sql);
+
+    const { results } = await this.query(sql);
     
     if (results.length === 0)
       return null;
-      
+
     return results[0];
   }
   
   async insert(table, body) {
-    const { results } = await this.queryValues(`INSERT INTO ${table} SET ?`, body);
+    const sql = `INSERT INTO ${table} SET ?`;
+    console.log(sql);
+
+    const { results } = await this.queryValues(sql, body);
     
-    return { id: results.insertId, ...body }
+    return this.selectSingle(table, results.insertId);
   }
   
   async update(table, id, body) {
     let values = [];
   
     let sql = `UPDATE ${table} `;
+    let index = 0;
   
     for (const key in body) {
-      sql += `SET ${key} = ? `;
+      if (index === 0)
+        sql += 'SET';
+      else
+        sql += ',';
+
+      sql += ` ${key} = ? `;
       values.push(body[key]);
+
+      index++;
     }
   
     sql += 'WHERE id = ?';
     values.push(id);
-  
+
+    console.log(sql);
+
     const { results } = await this.queryValues(sql, values);
 
     if (results.affectedRows === 0)
       return null;
 
-    return { ...body };
+    return this.selectSingle(table, id);
   }
   
   async delete(table, id) {
-    const { results } = await this.queryValues(`DELETE FROM ${table} WHERE id = ?`, id);
+    const sql = `DELETE FROM ${table} WHERE Id = ?`;
+    console.log(sql);
+
+    const row = this.selectSingle(table, id);
+
+    if (!row)
+      return null;
+
+    const { results } = await this.queryValues(sql, id);
 
     if (results.affectedRows === 0)
       return null;
 
-    return results;
+    return row;
   }
   
   async deleteAll(table) {

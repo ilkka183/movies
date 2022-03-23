@@ -133,16 +133,16 @@ describe('/api/genres', () => {
 
 
   //
-  // PUT
+  // PATCH
   //
 
-  describe('PUT /:id', () => {
+  describe('PATCH /:id', () => {
 
     let token;
 
     function execute(id, body) {
       return request(server)
-        .put('/api/genres/' + id)
+        .patch('/api/genres/' + id)
         .set('x-auth-token', token)
         .send(body);
     }

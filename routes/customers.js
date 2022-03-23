@@ -38,7 +38,7 @@ router.post('/', [auth, validate(Customer.validate)], wrap(async (req, res, next
 }));
 
 
-router.put('/:id', [auth, validateId, validate(Customer.validate)], wrap(async (req, res, next) => {
+router.patch('/:id', [auth, validateId, validate(Customer.validate)], wrap(async (req, res, next) => {
   const id = parseInt(req.params.id);
 
   const result = await connection.update('Customer', id, req.body);

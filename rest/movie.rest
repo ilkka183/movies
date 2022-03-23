@@ -16,7 +16,7 @@ content-type: application/json
     "dailyRentalRate": 5
 }
 ###
-PUT {{endpoint}}/1
+PATCH {{endpoint}}/1
 x-auth-token: {{token}}
 content-type: application/json
 

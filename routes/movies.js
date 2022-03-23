@@ -38,7 +38,7 @@ router.post('/', [auth, validate(Movie.validate)], wrap(async (req, res) => {
 }));
 
 
-router.put('/:id', [auth, validateId, validate(Movie.validate)], wrap(async (req, res) => {
+router.patch('/:id', [auth, validateId, validate(Movie.validate)], wrap(async (req, res) => {
   const id = parseInt(req.params.id);
 
   const result = await connection.update('Movie', id, req.body);
