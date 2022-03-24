@@ -1,11 +1,11 @@
-const Entity = require('./entity');
+const Entity = require('../common/entity');
 
 class Genre extends Entity {
   constructor(connection) {
     super(connection);
 
-    this.addField('Id');
-    this.addField('Name', { required: true, minLength: 5, maxLength: 50  });
+    this.addField('Id', { autoIncrement: true });
+    this.addField('Name', { required: true, minLength: 5, maxLength: 50 });
   }
 }
 

@@ -14,5 +14,5 @@ content-type: application/json
     "name": "Ulla Salmenius",
     "email": "ulla.salmenius@gmail.com",
     "password": "haahuu",
-    "isAdmin": 0
+    "isAdmin": false
 }

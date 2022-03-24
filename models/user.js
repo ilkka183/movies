@@ -1,11 +1,11 @@
-require('dotenv').config();
+const config = require('config');
 const jwt = require('jsonwebtoken');
-const connection = require('../connection');
-const Entity = require('./entity');
+const connection = require('../common/connection');
+const Entity = require('../common/entity');
 
 class User extends Entity {
   static getPrivateKey() {
-    return process.env.JWT_PRIVATE_KEY;
+    return config.jwtPrivateKey;
   }
   
   static generateToken(user) {

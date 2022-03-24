@@ -1,5 +1,5 @@
 const request = require('supertest');
-const connection = require('../../connection');
+const connection = require('../../common/connection');
 const Movie = require('../../models/movie');
 const Rental = require('../../models/rental');
 const User = require('../../models/user');
@@ -11,7 +11,7 @@ describe('/api/returns', () => {
     name: 'John Smith',
     email: 'john.smith@gmail.com',
     password: 'dummy',
-    isAdmin: 1
+    isAdmin: true
   };
 
   let server;

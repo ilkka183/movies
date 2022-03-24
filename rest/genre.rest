@@ -21,6 +21,6 @@ content-type: application/json
     "name": "Actionss"
 }
 ###
-DELETE {{endpoint}}/19
+DELETE {{endpoint}}/22
 x-auth-token: {{adminToken}}
 

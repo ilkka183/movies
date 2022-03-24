@@ -75,7 +75,7 @@ class Entity {
   }
 
   async findById(id) {
-    const { results } = await connection.query(`SELECT * FROM ${this.tableName()} WHERE Id = ` + id);
+    const { results } = await this.connection.query(`SELECT * FROM ${this.tableName()} WHERE Id = ` + id);
 
     if (results.length > 0)
       return results[0];
@@ -85,66 +85,32 @@ class Entity {
 
 
   //
-  // SQL
+  // SQL Commands
   //
-  
+
   async selectMany(sql) {
-    console.log(sql);
+    const rows = await this.connection.selectMany(sql);
 
-    const { results } = await this.connection.query(sql);
-
-    return results.map(row => this.toObj(row));
+    return rows.map(row => this.toObj(row));
   }
   
   async selectSingle(table, id) {
-    const sql = `SELECT * FROM ${table} WHERE Id = ${id}`;
-    console.log(sql);
-
-    const { results } = await this.connection.query(sql);
+    const row = await this.connection.selectSingle(table, id);
     
-    if (results.length === 0)
-      return null;
+    if (row)
+      return this.toObj(row);
 
-    return this.toObj(results[0]);
+    return null;
   }
   
   async insert(table, body) {
-    body = this.toSql(body);
-
-    const sql = `INSERT INTO ${table} SET ?`;
-    console.log(sql);
-
-    const { results } = await this.connection.queryValues(sql, body);
+    const results = await this.connection.insert(table, this.toSql(body));
     
     return await this.selectSingle(table, results.insertId);
   }
   
   async update(table, id, body) {
-    body = this.toSql(body);
-
-    let values = [];
-  
-    let sql = `UPDATE ${table} `;
-    let index = 0;
-  
-    for (const key in body) {
-      if (index === 0)
-        sql += 'SET';
-      else
-        sql += ',';
-
-      sql += ` ${key} = ? `;
-      values.push(body[key]);
-
-      index++;
-    }
-  
-    sql += 'WHERE id = ?';
-    values.push(id);
-
-    console.log(sql);
-
-    const { results } = await this.connection.queryValues(sql, values);
+    const results = await this.connection.update(table, id, this.toSql(body));
 
     if (results.affectedRows === 0)
       return null;
@@ -153,36 +119,25 @@ class Entity {
   }
   
   async delete(table, id) {
-    const sql = `DELETE FROM ${table} WHERE Id = ?`;
-    console.log(sql);
-
-    const row = await this.selectSingle(table, id);
-
-    if (!row)
-      return null;
-
-    const { results } = await this.connection.queryValues(sql, id);
+    const row = this.selectSingle(table, id);
+    const results = await this.connection.delete(table, id);
 
     if (results.affectedRows === 0)
       return null;
 
     return row;
   }
-  
-  async deleteAll(table) {
-    return await this.connection.query(`DELETE FROM ${table}`);
-  }
 
 
   //
-  // REST
+  // REST Methods
   //
 
   notFoundMessage(id) {
     return `The ${this.tableName()} with ID = ${id} was not found.`;
   }
 
-  async restGet(req, res, next) {
+  async processGetAll(req, res, next) {
     try {
       const rows = await this.selectMany(`SELECT * FROM ${this.tableName()} ORDER BY Id`);
   
@@ -193,10 +148,13 @@ class Entity {
     }
   }
 
-  async restGetId(req, res, next) {
+  async processGetById(req, res, next) {
     try {
       const id = parseInt(req.params.id);
-  
+
+      if (isNaN(id))
+        return res.status(404).send('Invalid ID.');
+    
       const row = await this.selectSingle(this.tableName(), id);
     
       if (!row)
@@ -209,7 +167,7 @@ class Entity {
     }
   }
 
-  async restPost(req, res, next) {
+  async processPost(req, res, next) {
     try {
       const error = this.validate(req.body);
   
@@ -225,10 +183,13 @@ class Entity {
     }
   }
 
-  async restPatch(req, res, next) {
+  async processPatch(req, res, next) {
     try {
       const id = parseInt(req.params.id);
   
+      if (isNaN(id))
+        return res.status(404).send('Invalid ID.');
+
       const error = this.validate(req.body);
   
       if (error)
@@ -246,10 +207,13 @@ class Entity {
     }
   }
 
-  async restDelete(req, res, next) {
+  async processDelete(req, res, next) {
     try {
       const id = parseInt(req.params.id);
   
+      if (isNaN(id))
+        return res.status(404).send('Invalid ID.');
+        
       const row = await this.delete(this.tableName(), id);
     
       if (!row)

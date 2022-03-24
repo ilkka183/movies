@@ -8,7 +8,7 @@ describe('auth middleware', () => {
     id: 1,
     name: 'John Smith',
     email: 'john.smith@gmail.com',
-    isAdmin: 0
+    isAdmin: false
   };
 
   it('should populate req.user with the payload of a valid JWT', () => {

@@ -1,12 +1,12 @@
 const express = require('express');
-const validate = require('../middleware/validate');
-const wrap = require('../middleware/wrap');
 const User = require('../models/user');
+
+const invalidEmailOrPassword = 'Invalid email or password.';
 
 const router = express.Router();
 
 
-function validateUser(user) {
+function validate(user) {
   if (!user.email)
     return { message: 'Email is required.' }
 
@@ -17,21 +17,29 @@ function validateUser(user) {
 }
 
 
-router.post('/', validate(validateUser), wrap(async (req, res) => {
-  const invalidEmailOrPassword = 'Invalid email or password.';
-
-  const user = await User.findByEmail(req.body.email);
+router.post('/', async (req, res, next) => {
+  try {
+    const error = validate(req.body);
+  
+    if (error)
+      return res.status(400).send(error.message);
  
-  if (!user)
-    return res.status(400).send(invalidEmailOrPassword);
-
-  if (user.password !== req.body.password)
-    return res.status(400).send(invalidEmailOrPassword);
-
-  const token = User.generateToken(user);
-
-  res.send(token);
-}));
+    const user = await User.findByEmail(req.body.email);
+   
+    if (!user)
+      return res.status(400).send(invalidEmailOrPassword);
+  
+    if (user.password !== req.body.password)
+      return res.status(400).send(invalidEmailOrPassword);
+  
+    const token = User.generateToken(user);
+  
+    res.send(token);
+  }
+  catch (ex) {
+    next(ex);
+  }
+});
 
 
 module.exports = router;

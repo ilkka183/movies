@@ -1,5 +1,5 @@
 const request = require('supertest');
-const connection = require('../../connection');
+const connection = require('../../common/connection');
 const User = require('../../models/user');
 
 let server;
@@ -11,7 +11,7 @@ describe('auth middleware', () => {
     name: 'John Smith',
     email: 'john.smith@gmail.com',
     password: 'dummy',
-    isAdmin: 0
+    isAdmin: false
   };
 
   let token = '';

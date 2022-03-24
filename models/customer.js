@@ -1,23 +1,12 @@
-const connection = require('../connection');
-const Entity = require('./entity');
+const Entity = require('../common/entity');
 
 class Customer extends Entity {
-  static async findById(id) {
-    const { results } = await connection.query('SELECT * FROM Customer WHERE Id = ' + id);
+  constructor(connection) {
+    super(connection);
 
-    if (results.length > 0)
-      return results[0];
-  
-    return null;
-  }
-
-  static validate(customer) {
-    if (!customer.name)
-      return { message: 'Name is required.' }
-  
-    return null
+    this.addField('Id', { autoIncrement: true });
+    this.addField('Name', { required: true, minLength: 5, maxLength: 50 });
   }
 }
 
 module.exports = Customer;
-
