@@ -1,6 +1,6 @@
 const config = require('config');
 const express = require('express');
-const db = require('./common/mySQL/sqlDatabase');
+const db = require('./common/mySQL/database');
 const logger = require('./common/logger');
 
 const app = express();

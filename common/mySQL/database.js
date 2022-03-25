@@ -1,6 +1,6 @@
 const mysql = require('mysql');
 
-class SqlDatabase {
+class Database {
   connect(config) {
     this.connection = mysql.createConnection(config);
 
@@ -107,6 +107,6 @@ class SqlDatabase {
   }
 }
 
-const database = new SqlDatabase();
+const database = new Database();
 
 module.exports = database;

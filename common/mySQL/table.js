@@ -1,7 +1,7 @@
 class Field {
-  constructor(name, params) {
+  constructor(name, options) {
     this.name = name;
-    this.params = params;
+    this.options = options;
   }
 
   sqlName() {
@@ -11,10 +11,30 @@ class Field {
   objName() {
     return this.name.charAt(0).toLowerCase() + this.name.slice(1);;
   }
+
+  minLength() {
+    return this.options.minLength;
+  }
+
+  maxLength() {
+    return this.options.maxLength;
+  }
+
+  minValue() {
+    return this.options.minValue;
+  }
+
+  maxValue() {
+    return this.options.maxValue;
+  }
+
+  required() {
+    return this.options.required;
+  }
 }
 
 
-class SqlEntity {
+class Table {
   constructor(db) {
     this.db = db;
 
@@ -25,8 +45,8 @@ class SqlEntity {
     return this.constructor.name;
   }
 
-  addField(name, params = {}) {
-    const field = new Field(name, params);
+  addField(name, options = {}) {
+    const field = new Field(name, options);
 
     this.fields.push(field);
   }
@@ -57,25 +77,35 @@ class SqlEntity {
     return sql;
   }
 
+  message(message) {
+    return { message }
+  }
+
   validate(obj) {
     for (const field of this.fields) {
       const value = obj[field.objName()];
 
-      if (field.params.required && !value)
-        return { message: 'Name is required.' }
+      if (field.required() && !value)
+        return this.message(`Field ${field.name} is required.`);
 
-      if (field.params.minLength && value.length < field.params.minLength)
-        return { message: `Name length have to be at least ${field.params.minLength} characters.` }
+      if (field.minLength() && (value.length < field.minLength()))
+        return this.message(`Field ${field.name} length have to be at least ${field.minLength()} characters.`);
 
-      if (field.params.maxLength && value.length > field.params.maxLength)
-        return { message: `Name length have to be less than ${field.params.maxLength} characters.` }
+      if (field.maxLength() && (value.length > field.maxLength()))
+        return this.message(`Field ${field.name} length have to be less than ${field.maxLength()} characters.`);
+
+      if (field.minValue() && (parseInt(value) < field.minValue()))
+        return this.message(`Field ${field.name} minumum value is ${field.minValue()}.`);
+
+      if (field.maxValue() && (parseInt(value) > field.maxValue()))
+        return this.message(`Field ${field.name} maximun value is ${field.maxValue()}.`); 
     }
 
     return null
   }
 
   async findById(id) {
-    const { results } = await this.db.query(`SELECT * FROM ${this.tableName()} WHERE Id = ` + id);
+    const { results } = await this.db.query(`SELECT * FROM ${this.tableName()} WHERE Id = ${id}`);
 
     if (results.length > 0)
       return results[0];
@@ -231,4 +261,4 @@ class SqlEntity {
   }
 }  
 
-module.exports = SqlEntity;
+module.exports = Table;

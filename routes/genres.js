@@ -1,5 +1,5 @@
 const express = require('express');
-const db = require('../common/mySQL/sqlDatabase');
+const db = require('../common/mySQL/database');
 const admin = require('../middleware/admin');
 const auth = require('../middleware/auth');
 const Genre = require('../models/genre');

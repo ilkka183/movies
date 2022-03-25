@@ -7,8 +7,8 @@ class Movie extends Entity {
     this.addField('Id', { autoIncrement: true });
     this.addField('Title', { required: true });
     this.addField('GenreId', { required: true });
-    this.addField('NumberInStock', { required: true });
-    this.addField('DailyRentalRate', { required: true });
+    this.addField('NumberInStock', { required: true, minValue: 0 });
+    this.addField('DailyRentalRate', { required: true, minValue: 0 });
   }
 }
 

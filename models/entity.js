@@ -1,6 +1,6 @@
-const SqlEntity = require('../common/mySQL/sqlEntity');
+const Table = require('../common/mySQL/table');
 
-class Entity extends SqlEntity {
+class Entity extends Table {
   constructor(db) {
     super(db);
   }

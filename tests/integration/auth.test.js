@@ -1,5 +1,5 @@
 const request = require('supertest');
-const db = require('../../common/mySQL/sqlDatabase');
+const db = require('../../common/mySQL/database');
 const Genre = require('../../models/genre');
 const User = require('../../models/user');
 

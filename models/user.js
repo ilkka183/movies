@@ -1,6 +1,6 @@
 const config = require('config');
 const jwt = require('jsonwebtoken');
-const db = require('../common/mySQL/sqlDatabase');
+const db = require('../common/mySQL/database');
 const Entity = require('./entity');
 
 class User extends Entity {
