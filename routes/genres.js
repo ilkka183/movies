@@ -1,10 +1,10 @@
 const express = require('express');
-const connection = require('../common/connection');
+const db = require('../common/mySQL/sqlDatabase');
 const admin = require('../middleware/admin');
 const auth = require('../middleware/auth');
 const Genre = require('../models/genre');
 
-const entity = new Genre(connection);
+const entity = new Genre(db);
 const router = express.Router();
 
 router.get('/', async (req, res, next) => await entity.processGetAll(req, res, next));

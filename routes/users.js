@@ -1,5 +1,5 @@
 const express = require('express');
-const connection = require('../common/connection');
+const db = require('../common/mySQL/sqlDatabase');
 const auth = require('../middleware/auth');
 const User = require('../models/user');
 
@@ -24,7 +24,7 @@ function validate(user) {
 
 router.get('/', async (req, res) => {
   try {
-    const { results } = await connection.query('SELECT * FROM User ORDER BY Id');
+    const { results } = await db.query('SELECT * FROM User ORDER BY Id');
 
     res.send(results);
   }
@@ -38,7 +38,7 @@ router.get('/me', auth, async (req, res) => {
   try {
     const id = req.user.id;
 
-    const { results } = await connection.query('SELECT * FROM User WHERE Id = ' + id);
+    const { results } = await db.query('SELECT * FROM User WHERE Id = ' + id);
   
     if (results.length === 0)
       return res.status(404).send(notFound);
@@ -51,7 +51,7 @@ router.get('/me', auth, async (req, res) => {
 });
 
 
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   try {
     const error = validate(req.body);
   
@@ -70,9 +70,9 @@ router.post('/', async (req, res) => {
       isAdmin: req.body.isAdmin
     }
   
-    const { results } = await connection.queryValues('INSERT INTO User SET ?', body);
+    const { results } = await db.queryValues('INSERT INTO User SET ?', user);
   
-    body.id = results.insertId;
+    user.id = results.insertId;
   
     const token = User.generateToken(user);
   

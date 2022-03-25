@@ -1,8 +1,8 @@
-const Entity = require('../common/entity');
+const Entity = require('./entity');
 
 class Movie extends Entity {
-  constructor(connection) {
-    super(connection);
+  constructor(db) {
+    super(db);
 
     this.addField('Id', { autoIncrement: true });
     this.addField('Title', { required: true });

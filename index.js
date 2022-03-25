@@ -1,6 +1,6 @@
 const config = require('config');
 const express = require('express');
-const connection = require('./common/connection');
+const db = require('./common/mySQL/sqlDatabase');
 const logger = require('./common/logger');
 
 const app = express();
@@ -16,7 +16,7 @@ const databaseConfig = {
   database: config.database
 }
 
-connection.connect(databaseConfig);
+db.connect(databaseConfig);
 
 const port = process.env.PORT || 5000;
 const server = app.listen(port, () => logger.log(`Listening on port ${port}...`));

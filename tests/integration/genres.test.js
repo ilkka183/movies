@@ -1,5 +1,5 @@
 const request = require('supertest');
-const connection = require('../../common/connection');
+const db = require('../../common/mySQL/sqlDatabase');
 const Genre = require('../../models/genre');
 const User = require('../../models/user');
 
@@ -22,8 +22,8 @@ describe('/api/genres', () => {
 
 
   afterEach(async () => {
-    await connection.deleteAll('User');
-    await connection.deleteAll('Genre');
+    await new User(db).deleteAll();
+    await new Genre(db).deleteAll();
 
     await server.close();
   });
@@ -36,8 +36,8 @@ describe('/api/genres', () => {
   describe('GET /', () => {
 
     it('should return all genres', async () => {
-      await connection.insert('Genre', { name: 'Genre1' });
-      await connection.insert('Genre', { name: 'Genre2' });
+      await new Genre(db).insert({ name: 'Genre1' });
+      await new Genre(db).insert({ name: 'Genre2' });
     
       const res = await request(server).get('/api/genres');
 
@@ -54,7 +54,7 @@ describe('/api/genres', () => {
 
     it('should return a genre if valid id is passed', async () => {
       const genre = { name: 'Genre1' };
-      const { id } = await connection.insert('Genre', genre);
+      const { id } = await new Genre(db).insert(genre);
     
       const res = await request(server).get('/api/genres/' + id);
 
@@ -91,9 +91,9 @@ describe('/api/genres', () => {
 
 
     beforeEach(async () => {
-      const id = await connection.insert('User', user);
+      const payload = await new User(db).insert(user);
 
-      token = User.generateToken({ id, ...user });
+      token = User.generateToken(payload);
     });
 
 
@@ -123,7 +123,7 @@ describe('/api/genres', () => {
     it('should save the genre if it is valid', async () => {
       const res = await execute({ name: 'Genre1' });
 
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(201);
       expect(res.body).not.toBeNull();
       expect(res.body).toHaveProperty('id');
       expect(res.body).toHaveProperty('name', 'Genre1');
@@ -149,14 +149,14 @@ describe('/api/genres', () => {
 
 
     beforeEach(async () => {
-      const { id } = await connection.insert('User', user);
+      const payload = await new User(db).insert(user);
 
-      token = User.generateToken({ id, ...user });
+      token = User.generateToken(payload);
     });
 
 
     it('should update a genre if valid id is given', async () => {
-      const { id } = await connection.insert('Genre', { name: 'Genre1' });
+      const { id } = await new Genre(db).insert({ name: 'Genre1' });
       const genre = { name: 'Genre2' }
 
       const res = await execute(id, genre);
@@ -166,7 +166,7 @@ describe('/api/genres', () => {
 
 
     it('should return 400 if invalid id is given', async () => {
-      const { id } = await connection.insert('Genre', { name: 'Genre1' });
+      const { id } = await new Genre(db).insert({ name: 'Genre1' });
       const genre = { name: 'Genre2' }
 
       const res = await execute(999, genre);
@@ -193,14 +193,14 @@ describe('/api/genres', () => {
 
 
     beforeEach(async () => {
-      const { id } = await connection.insert('User', user);
+      const payload = await new User(db).insert(user);
 
-      token = User.generateToken({ id, ...user });
+      token = User.generateToken(payload);
     });
 
 
     it('should delete a genre if valid id is given', async () => {
-      const { id } = await connection.insert('Genre', { name: 'Genre1' });
+      const { id } = await new Genre(db).insert({ name: 'Genre1' });
 
       const res = await execute(id);
 
@@ -209,7 +209,7 @@ describe('/api/genres', () => {
 
     
     it('should return 400 if invalid id is given', async () => {
-      const { id } = await connection.insert('Genre', { name: 'Genre1' });
+      const { id } = await new Genre(db).insert({ name: 'Genre1' });
 
       const res = await execute(1);
 

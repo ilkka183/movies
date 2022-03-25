@@ -18,9 +18,9 @@ x-auth-token: {{token}}
 content-type: application/json
 
 {
-    "name": "Actionss"
+    "name": "Actions"
 }
 ###
-DELETE {{endpoint}}/22
+DELETE {{endpoint}}/23
 x-auth-token: {{adminToken}}
 

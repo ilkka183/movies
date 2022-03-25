@@ -1,9 +1,19 @@
 const config = require('config');
 const jwt = require('jsonwebtoken');
-const connection = require('../common/connection');
-const Entity = require('../common/entity');
+const db = require('../common/mySQL/sqlDatabase');
+const Entity = require('./entity');
 
 class User extends Entity {
+  constructor(db) {
+    super(db);
+
+    this.addField('Id', { autoIncrement: true });
+    this.addField('Name', { required: true });
+    this.addField('Email', { required: true });
+    this.addField('Password', { required: true });
+    this.addField('IsAdmin', { required: true });
+  }
+
   static getPrivateKey() {
     return config.jwtPrivateKey;
   }
@@ -27,7 +37,7 @@ class User extends Entity {
   }
 
   static async findByEmail(email) {
-    const { results } = await connection.query('SELECT * FROM User WHERE Email = "' + email + '"');
+    const { results } = await db.query('SELECT * FROM User WHERE Email = "' + email + '"');
 
     if (results.length > 0) {
       return results[0];

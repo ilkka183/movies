@@ -1,10 +1,10 @@
 const mysql = require('mysql');
 
-class Connection {
+class SqlDatabase {
   connect(config) {
     this.connection = mysql.createConnection(config);
 
-    this.connection.connect(err => {
+    this.connection.connect(async err => {
       console.log(`Connedted to ${config.database}...`);
 
       if (err)
@@ -37,6 +37,11 @@ class Connection {
 
     return promise;
   }
+
+
+  //
+  // Basic commands
+  //
 
   async selectMany(sql) {
     const { results } = await this.query(sql);
@@ -102,6 +107,6 @@ class Connection {
   }
 }
 
-const connection = new Connection();
+const database = new SqlDatabase();
 
-module.exports = connection;
+module.exports = database;

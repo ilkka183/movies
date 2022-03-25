@@ -1,8 +1,8 @@
-const Entity = require('../common/entity');
+const Entity = require('./entity');
 
 class Rental extends Entity {
-  constructor(connection) {
-    super(connection);
+  constructor(db) {
+    super(db);
 
     this.addField('Id', { autoIncrement: true });
     this.addField('CustomerId', { required: true });
@@ -13,7 +13,7 @@ class Rental extends Entity {
   }
 
   static async lookup(customerId, movieId) {
-    const { results } = await connection.query('SELECT * FROM Rental WHERE customerId = ' + customerId + ' AND movieId = ' + movieId);
+    const { results } = await this.db.query('SELECT * FROM Rental WHERE customerId = ' + customerId + ' AND movieId = ' + movieId);
 
     if (results.length > 0)
       return results[0];
@@ -24,8 +24,8 @@ class Rental extends Entity {
   async return(rental, customer, movie) {
     const fee = movie.dailyRentalRate;
 
-    await connection.queryValues('UPDATE Rental SET dateReturned = CURDATE(), rentalFee = ? WHERE id = ?', [fee, rental.id]);
-    await connection.queryValues('UPDATE Movie SET numberInStock = numberInStock + 1 WHERE id = ?', [rental.movieId]);
+    await this.db.queryValues('UPDATE Rental SET dateReturned = CURDATE(), rentalFee = ? WHERE id = ?', [fee, rental.id]);
+    await this.db.queryValues('UPDATE Movie SET numberInStock = numberInStock + 1 WHERE id = ?', [rental.movieId]);
   }
 }
 

@@ -1,5 +1,6 @@
 const request = require('supertest');
-const connection = require('../../common/connection');
+const db = require('../../common/mySQL/sqlDatabase');
+const Genre = require('../../models/genre');
 const User = require('../../models/user');
 
 let server;
@@ -27,7 +28,7 @@ describe('auth middleware', () => {
   beforeEach(async () => {
     server = require('../../index');
 
-    const { id } = await connection.insert('User', user);
+    const { id } = await new User(db).insert(user);
 
     token = User.generateToken({ id, ...user });
   });
@@ -36,8 +37,8 @@ describe('auth middleware', () => {
   afterEach(async () => {
     server.close();
 
-    await connection.deleteAll('Genre');
-    await connection.deleteAll('User');
+    await new Genre(db).deleteAll();
+    await new User(db).deleteAll();
   });
 
 
@@ -62,7 +63,7 @@ describe('auth middleware', () => {
   it('should return 200 if token is valid', async () => {
     const res = await execute();
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(201);
   });
 
 });

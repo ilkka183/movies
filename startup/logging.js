@@ -9,6 +9,7 @@ module.exports = function () {
   });
   
   process.on('unhandledRejection', ex => {
+    console.log(ex);
     logger.error('WE GOT AN UNHANDLED REJECTION');
     
     process.exit(1);

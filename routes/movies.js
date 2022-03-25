@@ -1,10 +1,10 @@
 const express = require('express');
-const connection = require('../common/connection');
+const db = require('../common/mySQL/sqlDatabase');
 const admin = require('../middleware/admin');
 const auth = require('../middleware/auth');
 const Movie = require('../models/movie');
 
-const entity = new Movie(connection);
+const entity = new Movie(db);
 const router = express.Router();
 
 router.get('/', async (req, res, next) => await entity.processGetAll(req, res, next));

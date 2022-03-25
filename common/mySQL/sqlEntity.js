@@ -14,9 +14,9 @@ class Field {
 }
 
 
-class Entity {
-  constructor(connection) {
-    this.connection = connection;
+class SqlEntity {
+  constructor(db) {
+    this.db = db;
 
     this.fields = [];
   }
@@ -75,7 +75,7 @@ class Entity {
   }
 
   async findById(id) {
-    const { results } = await this.connection.query(`SELECT * FROM ${this.tableName()} WHERE Id = ` + id);
+    const { results } = await this.db.query(`SELECT * FROM ${this.tableName()} WHERE Id = ` + id);
 
     if (results.length > 0)
       return results[0];
@@ -89,13 +89,13 @@ class Entity {
   //
 
   async selectMany(sql) {
-    const rows = await this.connection.selectMany(sql);
+    const rows = await this.db.selectMany(sql);
 
     return rows.map(row => this.toObj(row));
   }
   
-  async selectSingle(table, id) {
-    const row = await this.connection.selectSingle(table, id);
+  async selectSingle(id) {
+    const row = await this.db.selectSingle(this.tableName(), id);
     
     if (row)
       return this.toObj(row);
@@ -103,29 +103,33 @@ class Entity {
     return null;
   }
   
-  async insert(table, body) {
-    const results = await this.connection.insert(table, this.toSql(body));
+  async insert(body) {
+    const results = await this.db.insert(this.tableName(), this.toSql(body));
     
-    return await this.selectSingle(table, results.insertId);
+    return await this.selectSingle(results.insertId);
   }
   
-  async update(table, id, body) {
-    const results = await this.connection.update(table, id, this.toSql(body));
+  async update(id, body) {
+    const results = await this.db.update(this.tableName(), id, this.toSql(body));
 
     if (results.affectedRows === 0)
       return null;
 
-    return await this.selectSingle(table, id);
+    return await this.selectSingle(id);
   }
   
-  async delete(table, id) {
-    const row = this.selectSingle(table, id);
-    const results = await this.connection.delete(table, id);
+  async delete(id) {
+    const row = this.selectSingle(id);
+    const results = await this.db.delete(this.tableName(), id);
 
     if (results.affectedRows === 0)
       return null;
 
     return row;
+  }
+
+  async deleteAll() {
+    await this.db.deleteAll(this.tableName());
   }
 
 
@@ -155,7 +159,7 @@ class Entity {
       if (isNaN(id))
         return res.status(404).send('Invalid ID.');
     
-      const row = await this.selectSingle(this.tableName(), id);
+      const row = await this.selectSingle(id);
     
       if (!row)
         return res.status(404).send(this.notFoundMessage(id));
@@ -174,7 +178,7 @@ class Entity {
       if (error)
         return res.status(400).send(error.message);
   
-      const row = await this.insert(this.tableName(), req.body);
+      const row = await this.insert(req.body);
   
       res.status(201).send(row);
     }
@@ -195,7 +199,7 @@ class Entity {
       if (error)
         return res.status(400).send(error.message);
   
-      const row = await this.update(this.tableName(), id, req.body);
+      const row = await this.update(id, req.body);
     
       if (!row)
         return res.status(404).send(this.notFoundMessage(id));
@@ -214,7 +218,7 @@ class Entity {
       if (isNaN(id))
         return res.status(404).send('Invalid ID.');
         
-      const row = await this.delete(this.tableName(), id);
+      const row = await this.delete(id);
     
       if (!row)
         return res.status(404).send(this.notFoundMessage(id));
@@ -227,4 +231,4 @@ class Entity {
   }
 }  
 
-module.exports = Entity;
+module.exports = SqlEntity;
