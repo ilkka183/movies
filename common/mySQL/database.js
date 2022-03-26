@@ -1,11 +1,15 @@
 const mysql = require('mysql');
 
 class Database {
-  connect(config) {
-    this.connection = mysql.createConnection(config);
+  constructor(config) {
+    this.config = config;
+  }
+
+  connect() {
+    this.connection = mysql.createConnection(this.config);
 
     this.connection.connect(async err => {
-      console.log(`Connedted to ${config.database}...`);
+      console.log(`Connedted to ${this.config.database}...`);
 
       if (err)
         throw new Error('Error connecting: ' + err.stack);
@@ -43,13 +47,13 @@ class Database {
   // Basic commands
   //
 
-  async selectMany(sql) {
+  async select(sql) {
     const { results } = await this.query(sql);
 
     return results;
   }
   
-  async selectSingle(table, id) {
+  async selectBy(table, id) {
     const sql = `SELECT * FROM ${table} WHERE Id = ${id}`;
 
     const { results } = await this.query(sql);
@@ -107,6 +111,4 @@ class Database {
   }
 }
 
-const database = new Database();
-
-module.exports = database;
+module.exports = Database;

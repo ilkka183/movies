@@ -1,5 +1,5 @@
 const express = require('express');
-const db = require('../common/mySQL/database');
+const db = require('../db');
 const auth = require('../middleware/auth');
 const User = require('../models/user');
 

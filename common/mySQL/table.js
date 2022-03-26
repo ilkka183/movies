@@ -105,11 +105,11 @@ class Table {
   }
 
   async findById(id) {
-    const { results } = await this.db.query(`SELECT * FROM ${this.tableName()} WHERE Id = ${id}`);
+    const row = await this.db.selectBy(this.tableName(), id);
+    
+    if (row)
+      return this.toObj(row);
 
-    if (results.length > 0)
-      return results[0];
-  
     return null;
   }
 
@@ -118,25 +118,16 @@ class Table {
   // SQL Commands
   //
 
-  async selectMany(sql) {
-    const rows = await this.db.selectMany(sql);
+  async select(sql) {
+    const rows = await this.db.select(sql);
 
     return rows.map(row => this.toObj(row));
-  }
-  
-  async selectSingle(id) {
-    const row = await this.db.selectSingle(this.tableName(), id);
-    
-    if (row)
-      return this.toObj(row);
-
-    return null;
   }
   
   async insert(body) {
     const results = await this.db.insert(this.tableName(), this.toSql(body));
     
-    return await this.selectSingle(results.insertId);
+    return await this.findById(results.insertId);
   }
   
   async update(id, body) {
@@ -145,11 +136,11 @@ class Table {
     if (results.affectedRows === 0)
       return null;
 
-    return await this.selectSingle(id);
+    return await this.findById(id);
   }
   
   async delete(id) {
-    const row = this.selectSingle(id);
+    const row = this.findById(id);
     const results = await this.db.delete(this.tableName(), id);
 
     if (results.affectedRows === 0)
@@ -173,7 +164,7 @@ class Table {
 
   async processGetAll(req, res, next) {
     try {
-      const rows = await this.selectMany(`SELECT * FROM ${this.tableName()} ORDER BY Id`);
+      const rows = await this.select(`SELECT * FROM ${this.tableName()} ORDER BY Id`);
   
       res.send(rows);
     }
@@ -189,7 +180,7 @@ class Table {
       if (isNaN(id))
         return res.status(404).send('Invalid ID.');
     
-      const row = await this.selectSingle(id);
+      const row = await this.findById(id);
     
       if (!row)
         return res.status(404).send(this.notFoundMessage(id));
