@@ -4,12 +4,12 @@ class Rental extends Entity {
   constructor(db) {
     super(db);
 
-    this.addField('Id', { autoIncrement: true });
-    this.addField('CustomerId', { required: true });
-    this.addField('MovieId', { required: true });
-    this.addField('DateOut', {});
-    this.addField('DateReturned', {});
-    this.addField('RentalFee', {});
+    this.addNumberField('Id', { autoIncrement: true });
+    this.addNumberField('CustomerId', { required: true });
+    this.addNumberField('MovieId', { required: true });
+    this.addDateField('DateOut', {});
+    this.addDateField('DateReturned', {});
+    this.addNumberField('RentalFee', {});
   }
 
   static async lookup(customerId, movieId) {

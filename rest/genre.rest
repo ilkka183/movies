@@ -3,7 +3,7 @@
 @adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwibmFtZSI6Iklsa2thIFNhbG1lbml1cyIsImVtYWlsIjoiaWxra2Euc2FsbWVuaXVzQGdtYWlsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTY0NzE0NjQ5MX0.meZoELejk01A7UW4QHAQ67KBoJJcGbrxHl3NoxAYNTk
 GET {{endpoint}}
 ###
-GET {{endpoint}}/1
+GET {{endpoint}}/2
 ###
 POST {{endpoint}}
 x-auth-token: {{token}}

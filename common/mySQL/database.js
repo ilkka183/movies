@@ -54,9 +54,9 @@ class Database {
   }
   
   async selectBy(table, id) {
-    const sql = `SELECT * FROM ${table} WHERE Id = ${id}`;
+    const sql = `SELECT * FROM ${table} WHERE Id = ?`;
 
-    const { results } = await this.query(sql);
+    const { results } = await this.queryValues(sql, id);
     
     if (results.length === 0)
       return null;

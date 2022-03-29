@@ -7,11 +7,11 @@ class User extends Entity {
   constructor(db) {
     super(db);
 
-    this.addField('Id', { autoIncrement: true });
-    this.addField('Name', { required: true });
-    this.addField('Email', { required: true });
-    this.addField('Password', { required: true });
-    this.addField('IsAdmin', { required: true });
+    this.addNumberField('Id', { autoIncrement: true });
+    this.addStringField('Name', { required: true });
+    this.addStringField('Email', { required: true });
+    this.addStringField('Password', { required: true });
+    this.addBooleanField('IsAdmin', { required: true });
   }
 
   static getPrivateKey() {

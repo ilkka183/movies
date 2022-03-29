@@ -1,6 +1,7 @@
 class Field {
-  constructor(name, options) {
+  constructor(name, type, options) {
     this.name = name;
+    this.type = type;
     this.options = options;
   }
 
@@ -10,6 +11,22 @@ class Field {
 
   objName() {
     return this.name.charAt(0).toLowerCase() + this.name.slice(1);;
+  }
+
+  isType(type) {
+    return this.type === type;
+  }
+
+  isNumber() {
+    return this.isType('number');
+  }
+
+  isString() {
+    return this.isType('string');
+  }
+
+  isBoolean() {
+    return this.isType('boolean');
   }
 
   minLength() {
@@ -45,10 +62,28 @@ class Table {
     return this.constructor.name;
   }
 
-  addField(name, options = {}) {
-    const field = new Field(name, options);
+  addField(name, type, options) {
+    const field = new Field(name, type, options);
 
     this.fields.push(field);
+
+    return field;
+  }
+
+  addNumberField(name, options = {}) {
+    return this.addField(name, 'number', options);
+  }
+
+  addStringField(name, options = {}) {
+    return this.addField(name, 'string', options);
+  }
+
+  addBooleanField(name, options = {}) {
+    return this.addField(name, 'boolean', options);
+  }
+
+  addDateField(name, options = {}) {
+    return this.addStringField(name, options);
   }
 
   toObj(row) {
